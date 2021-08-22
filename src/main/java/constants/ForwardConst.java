@@ -58,7 +58,7 @@ public enum ForwardConst {
      * 値（文字列）取得
      * @return
      */
-    public String gettValue() {
+    public String getValue() {
         return this.text;
     }
 
@@ -70,7 +70,7 @@ public enum ForwardConst {
      */
     public static ForwardConst get(String key) {
         for(ForwardConst c : values()) {
-            if(c.gettValue().equals(key)){
+            if(c.getValue().equals(key)){
                 return c;
             }
         }
