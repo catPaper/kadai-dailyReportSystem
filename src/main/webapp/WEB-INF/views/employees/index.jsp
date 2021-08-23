@@ -50,11 +50,11 @@
                         <c:out value="${i}" />&nbsp;
                     </c:when>
                     <c:otherwise>
-                        <a href="<c:url value='?action=${actEmp}&command=${cmmIdx}&page=${i}'/>"><c:out value="${i}" /></a>&nbsp;
+                        <a href="<c:url value='?action=${actEmp}&command=${commIdx}&page=${i}'/>"><c:out value="${i}" /></a>&nbsp;
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
         </div>
-        <p><a href="<c:url value='?action=${actEmp}&command=${cmmNew}' />">新規従業員の登録</a></p>
+        <p><a href="<c:url value='?action=${actEmp}&command=${commNew}' />">新規従業員の登録</a></p>
     </c:param>
 </c:import>
