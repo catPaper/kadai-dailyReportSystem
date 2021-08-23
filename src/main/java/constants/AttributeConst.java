@@ -30,7 +30,7 @@ public enum AttributeConst {
     EMP_COUNT("employee_count"),
     EMP_ID("id"),
     EMP_CODE("code"),
-    EMP_PASSWARD("password"),
+    EMP_PASSWORD("password"),
     EMP_NAME("name"),
     EMP_ADMIN_FLAG("admin_flag"),
 
