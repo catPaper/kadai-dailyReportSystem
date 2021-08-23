@@ -18,7 +18,7 @@
         </form>
 
         <p><a href="#" onclick="confirmDestroy();">この従業員情報を削除する</a></p>
-        <form method="POST" action="<c:url value='?ation=${action}&command=${commDel}' />">
+        <form method="POST" action="<c:url value='?action=${action}&command=${commDel}' />">
             <input type="hidden" name="${AttributeConst.EMP_ID.getValue()}" value="${employee.id}" />
             <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
         </form>
