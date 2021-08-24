@@ -8,7 +8,7 @@
 
 <c:import url="../layout/app.jsp">
     <c:param name="content">
-        <c:if test="${login.Error}">
+        <c:if test="${loginError}">
             <div id="flush_error">
                 社員番号かパスワードが間違っています。
             </div>
@@ -28,7 +28,7 @@
             <input type="password" name="${AttributeConst.EMP_PASS.getValue()}" />
             <br><br>
 
-            <input type = "hidden" name="${AttributeConst.TOKEN }" value="${_token}" />
+            <input type = "hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
             <button type="submit">ログイン</button>
         </form>
     </c:param>
