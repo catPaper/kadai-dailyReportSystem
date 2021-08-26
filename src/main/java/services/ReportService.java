@@ -88,7 +88,7 @@ public class ReportService extends ServiceBase {
 
         //バリデーションを行う
         List<String> errors = ReportValidator.validate(rv);
-        if(errors.size() > 0) {
+        if(errors.size() == 0) {
             LocalDateTime ldt = LocalDateTime.now();
             rv.setCreatedAt(ldt);
             rv.setUpdatedAt(ldt);
@@ -108,7 +108,7 @@ public class ReportService extends ServiceBase {
 
         //バリデーションを行う
         List<String> errors = ReportValidator.validate(rv);
-        if(errors.size() > 0) {
+        if(errors.size() == 0) {
             //更新日時を現在時刻に設定
             LocalDateTime ldt = LocalDateTime.now();
             rv.setUpdatedAt(ldt);
