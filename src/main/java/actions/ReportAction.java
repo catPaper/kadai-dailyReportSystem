@@ -108,8 +108,18 @@ public class ReportAction extends ActionBase {
             }
 
             //セッションから出勤時刻、退勤時刻情報を取得
-            Time punchIn = Time.valueOf(getRequestParam(AttributeConst.REP_PUNCH_IN));
-            Time punchOut = Time.valueOf(getRequestParam(AttributeConst.REP_PUNCH_OUT));
+            //もし入力が無ければエラーメッセージを出すため、null値を設定
+            String chkPunchIn = getRequestParam(AttributeConst.REP_PUNCH_IN);
+            Time punchIn = null;
+            if(!(chkPunchIn == null || chkPunchIn.equals(""))) {
+                punchIn = Time.valueOf(chkPunchIn + ":00");   //秒情報の付与
+            }
+            String chkPunchOut = getRequestParam(AttributeConst.REP_PUNCH_OUT);
+            Time punchOut = null;
+            if(!(chkPunchOut == null || chkPunchOut.equals(""))){
+                punchOut = Time.valueOf(chkPunchOut + ":00");   //秒情報の付与
+            }
+
 
             //セッションからログイン中の従業員情報を取得
             EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);

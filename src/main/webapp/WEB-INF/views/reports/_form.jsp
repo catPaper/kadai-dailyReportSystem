@@ -28,12 +28,13 @@
 <textarea name="${AttributeConst.REP_CONTENT.getValue()}" rows="10" cols="50">${report.content}</textarea>
 <br><br>
 
-<label for="${AttributeConst.REP_PUNCH_IN.getValue()}">出勤時刻</label>
-<input type="time" name="${AttributeConst.REP_PUNCH_IN.getValue()}" value="<fmt:formatDate value='${report.punchIn}' pattern='HH:mm:00' type='time' />">
+<label for="${AttributeConst.REP_PUNCH_IN.getValue()}">出勤時刻</label><br>
+<input type="time" name="${AttributeConst.REP_PUNCH_IN.getValue()}" value="<fmt:formatDate value='${report.punchIn}' pattern='HH:mm' />">
+
 <br><br>
 
-<label for="${AttributeConst.REP_PUNCH_OUT.getValue()}">出勤時刻</label>
-<input type="time" name="${AttributeConst.REP_PUNCH_OUT.getValue()}" value="<fmt:formatDate value='${report.punchOut}' pattern='HH:mm:00' type='time' />">
+<label for="${AttributeConst.REP_PUNCH_OUT.getValue()}">退勤時刻</label><br>
+<input type="time" name="${AttributeConst.REP_PUNCH_OUT.getValue()}" value="<fmt:formatDate value='${report.punchOut}' pattern='HH:mm' />">
 <br><br>
 
 <br><br>
