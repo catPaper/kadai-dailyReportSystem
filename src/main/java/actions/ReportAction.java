@@ -1,6 +1,7 @@
 package actions;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -75,9 +76,12 @@ public class ReportAction extends ActionBase {
 
         putRequestScope(AttributeConst.TOKEN,getTokenId()); //CSRF対策用トークン
 
-        //日報情報の空インスタンスに、日報の日付＝今日の日付を設定する
         ReportView rv = new ReportView();
+        //日報情報の空インスタンスに、日報の日付＝今日の日付を設定する
         rv.setReportDate(LocalDate.now());
+        //日報の出勤時刻と退勤時刻にデフォルト値を設定する
+        rv.setPunchIn(Time.valueOf(AttributeConst.REP_DEF_PUNCH_IN.getValue()));
+        rv.setPunchOut(Time.valueOf(AttributeConst.REP_DEF_PUNCH_OUT.getValue()));
         putRequestScope(AttributeConst.REPORT,rv);
 
         //新規登録画面を表示
@@ -103,6 +107,10 @@ public class ReportAction extends ActionBase {
                 day = LocalDate.parse(getRequestParam(AttributeConst.REP_DATE));
             }
 
+            //セッションから出勤時刻、退勤時刻情報を取得
+            Time punchIn = Time.valueOf(getRequestParam(AttributeConst.REP_PUNCH_IN));
+            Time punchOut = Time.valueOf(getRequestParam(AttributeConst.REP_PUNCH_OUT));
+
             //セッションからログイン中の従業員情報を取得
             EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
 
@@ -114,7 +122,9 @@ public class ReportAction extends ActionBase {
                     getRequestParam(AttributeConst.REP_TITLE),
                     getRequestParam(AttributeConst.REP_CONTENT),
                     null,
-                    null);
+                    null,
+                    punchIn,
+                    punchOut);
 
             //日報情報の登録
             List<String> errors = service.create(rv);

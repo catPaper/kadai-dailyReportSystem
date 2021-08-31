@@ -49,7 +49,13 @@ public enum AttributeConst {
     REP_ID("id"),
     REP_DATE("report_date"),
     REP_TITLE("title"),
-    REP_CONTENT("content");
+    REP_CONTENT("content"),
+    REP_PUNCH_IN("punch_in"),
+    REP_PUNCH_OUT("punch_out"),
+
+    //日報管理ーデフォルト値
+    REP_DEF_PUNCH_IN("09:00:00"),
+    REP_DEF_PUNCH_OUT("18:00:00");
 
     private final String text;
     private final Integer i;

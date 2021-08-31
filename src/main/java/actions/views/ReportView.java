@@ -1,5 +1,6 @@
 package actions.views;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -53,5 +54,15 @@ public class ReportView {
      * 更新日時
      */
     private LocalDateTime updatedAt;
+
+    /*
+     * 出勤時刻
+     */
+    private Time punchIn;
+
+    /*
+     * 退勤時刻
+     */
+    private Time punchOut;
 
 }

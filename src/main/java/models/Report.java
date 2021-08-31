@@ -1,5 +1,6 @@
 package models;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -93,4 +94,16 @@ public class Report {
      */
     @Column(name = JpaConst.REP_COL_UPDATED_AT,nullable = false)
     private LocalDateTime updatedAt;
+
+    /*
+     * 出勤時刻
+     */
+    @Column(name = JpaConst.REP_COL_PUNCH_IN,nullable = false)
+    private Time punchIn;
+
+    /*
+     * 退勤時刻
+     */
+    @Column(name = JpaConst.REP_COL_PUNCH_OUT,nullable = false)
+    private Time punchOut;
 }
