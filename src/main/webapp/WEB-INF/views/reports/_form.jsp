@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="constants.AttributeConst" %>
+<%@ page import="constants.ParameterConst" %>
 
 <c:if test="${errors != null}">
     <div id="flush_error">
@@ -29,12 +30,12 @@
 <br><br>
 
 <label for="${AttributeConst.REP_PUNCH_IN.getValue()}">出勤時刻</label><br>
-<input type="time" name="${AttributeConst.REP_PUNCH_IN.getValue()}" value="<fmt:formatDate value='${report.punchIn}' pattern='HH:mm' />">
+<input type="time" name="${AttributeConst.REP_PUNCH_IN.getValue()}" value="<fmt:formatDate value='${report.punchIn}' pattern='HH:mm' />" step="${ParameterConst.STEP_REP_PUNCH_IN.getValue()}">
 
 <br><br>
 
 <label for="${AttributeConst.REP_PUNCH_OUT.getValue()}">退勤時刻</label><br>
-<input type="time" name="${AttributeConst.REP_PUNCH_OUT.getValue()}" value="<fmt:formatDate value='${report.punchOut}' pattern='HH:mm' />">
+<input type="time" name="${AttributeConst.REP_PUNCH_OUT.getValue()}" value="<fmt:formatDate value='${report.punchOut}' pattern='HH:mm' />" step="${ParameterConst.STEP_REP_PUNCH_OUT.getValue()}">
 <br><br>
 
 <br><br>

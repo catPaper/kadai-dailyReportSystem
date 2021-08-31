@@ -14,6 +14,7 @@ import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
+import constants.ParameterConst;
 import services.ReportService;
 
 /**
@@ -80,8 +81,8 @@ public class ReportAction extends ActionBase {
         //日報情報の空インスタンスに、日報の日付＝今日の日付を設定する
         rv.setReportDate(LocalDate.now());
         //日報の出勤時刻と退勤時刻にデフォルト値を設定する
-        rv.setPunchIn(Time.valueOf(AttributeConst.REP_DEF_PUNCH_IN.getValue()));
-        rv.setPunchOut(Time.valueOf(AttributeConst.REP_DEF_PUNCH_OUT.getValue()));
+        rv.setPunchIn(Time.valueOf(ParameterConst.DEF_REP_PUNCH_IN.getValue()));
+        rv.setPunchOut(Time.valueOf(ParameterConst.DEF_REP_PUNCH_OUT.getValue()));
         putRequestScope(AttributeConst.REPORT,rv);
 
         //新規登録画面を表示
