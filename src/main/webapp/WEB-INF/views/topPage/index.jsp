@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="constants.ForwardConst" %>
+<%@ page import="constants.AttributeConst" %>
 
 <c:set var="actTop" value="${ForwardConst.ACT_TOP.getValue()}" />
 <c:set var="actEmp" value="${ForwardConst.ACT_EMP.getValue()}" />
@@ -10,6 +11,8 @@
 <c:set var="commShow" value="${ForwardConst.CMD_SHOW.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commNew" value="${ForwardConst.CMD_NEW.getValue()}" />
+<c:set var="commPnchIn" value="${ForwardConst.CMD_PUNCH_IN.getValue()}" />
+<c:set var="commPnchInCancel" value="${ForwardConst.CMD_PUNCH_IN_CANCEL.getValue()}" />
 
 <c:import url="../layout/app.jsp">
     <c:param name="content">
@@ -19,6 +22,26 @@
             </div>
         </c:if>
         <h2>日報管理システムへようこそ</h2>
+
+        <c:choose>
+            <c:when test="${t_punch_in == null}">
+                <form method="POST"
+                    action="<c:url value='?action=${actTop}&command=${commPnchIn}' />">
+                    <input type="hidden" name="${AttributeConst.TOKEN.getValue()}"
+                        value="${_token}" />
+                    &nbsp;<button type="submit">出勤する</button>
+                </form>
+            </c:when>
+            <c:otherwise>
+                <form method="POST"
+                    action="<c:url value='?action=${actTop}&command=${commPnchInCancel}' />">
+                    <input type="hidden" name="${AttributeConst.TOKEN.getValue()}"
+                        value="${_token}" />
+                    &nbsp;<button type="submit">出勤を取り消す</button>
+                </form>
+            </c:otherwise>
+        </c:choose>
+        <br>
         <h3>【自分の日報 一覧】</h3>
         <table>
             <tbody>

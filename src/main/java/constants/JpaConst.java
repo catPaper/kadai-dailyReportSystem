@@ -44,9 +44,17 @@ public interface JpaConst {
     String REP_COL_PUNCH_IN = "punch_in";       //出勤時刻
     String REP_COL_PUNCH_OUT = "punch_out";     //退勤時刻
 
+    //ユーザー一時保存テーブル
+    String TABLE_TMP = "userTmps";          //テーブル名
+    //ユーザー一時保存カラム
+    String TMP_COL_ID = "id";                    //id
+    String TMP_COL_EMP = "employee_id";     //一時保存する従業員のid
+    String TMP_COL_PUNCH_IN = "punch_in";  //出勤時刻
+
     //Entity名
     String ENTITY_EMP = "employee"; //従業員
     String ENTITY_REP = "report";   //日報
+    String ENTITY_TMP = "userTmp";  //ユーザー一時保存
 
     //JPQLパラメータ
     String JPQL_PARM_CODE = "code";          //社員番号
@@ -78,5 +86,10 @@ public interface JpaConst {
     //指定した従業員が作成した日報の件数を取得する
     String Q_REP_COUNT_ALL_MINE = ENTITY_REP + ".countAllMine";
     String Q_REP_COUNT_ALL_MINE_DEF = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :" + JPQL_PARM_EMPLOYEE;
-
+    //指定した従業員のユーザー一時情報を取得する
+    String Q_TMP_GET_MINE = ENTITY_TMP + ".getMine";
+    String Q_TMP_GET_MINE_DEF = "SELECT t FROM UserTmp AS t WHERE t.employee = :" + JPQL_PARM_EMPLOYEE;
+    //指定した従業員が作成したユーザー一時情報の件数を取得する
+    String Q_TMP_COUNT_ALL_MINE = ENTITY_TMP + ".countAllMine";
+    String Q_TMP_COUNT_ALL_MINE_DEF = "SELECT COUNT(t) FROM UserTmp AS t WHERE t.employee = :" + JPQL_PARM_EMPLOYEE;
 }

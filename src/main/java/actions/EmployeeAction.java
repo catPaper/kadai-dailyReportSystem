@@ -12,6 +12,7 @@ import constants.JpaConst;
 import constants.MessageConst;
 import constants.PropertyConst;
 import services.EmployeeService;
+import services.UserTmpService;
 
 /**
  * 従業員に関わる処理を行うクラス
@@ -20,17 +21,20 @@ import services.EmployeeService;
  */
 public class EmployeeAction extends ActionBase {
 
-    private EmployeeService service;
+    private EmployeeService employeeService;
+    private UserTmpService tmpService;
 
     @Override
     public void process() throws ServletException, IOException {
 
-        service = new EmployeeService();
+        employeeService = new EmployeeService();
+        tmpService = new UserTmpService();
 
         //メソッドを実行
         invoke();
 
-        service.close();
+        employeeService.close();
+        tmpService.close();
     }
 
     /**
@@ -44,10 +48,10 @@ public class EmployeeAction extends ActionBase {
         if(checkAdmin()) {
             //指定されたページ数の一覧画面に表示するデータを取得
             int page = getPage();
-            List<EmployeeView> employees = service.getPerPage(page);
+            List<EmployeeView> employees = employeeService.getPerPage(page);
 
             //全ての従業員データの件数を取得
-            long employeeCount = service.CountAll();
+            long employeeCount = employeeService.CountAll();
 
             putRequestScope(AttributeConst.EMPLOYEES,employees);              //取得した従業員データ
             putRequestScope(AttributeConst.EMP_COUNT,employeeCount);          //全ての従業員データの件数
@@ -108,7 +112,7 @@ public class EmployeeAction extends ActionBase {
             String pepper = getContextScope(PropertyConst.PEPPER);
 
             //従業員情報登録
-            List<String> errors = service.create(ev, pepper);
+            List<String> errors = employeeService.create(ev, pepper);
 
             if(errors.size() > 0) {
                 //登録中にエラーがあった場合
@@ -121,6 +125,9 @@ public class EmployeeAction extends ActionBase {
                 forward(ForwardConst.FW_EMP_NEW);
             }else {
                 //登録中にエラーがなかった場合
+
+                //従業員用のユーザーテンプデータを作成する
+                tmpService.create(ev);
 
                 //セッションに登録完了のフラッシュメッセージを設定
                 putSessionScope(AttributeConst.FLUSH,MessageConst.I_REGISTERED.getMessage());
@@ -141,7 +148,7 @@ public class EmployeeAction extends ActionBase {
         //管理者かどうかのチェック
         if(checkAdmin()) {
             //idを条件に従業員データを取得する
-            EmployeeView ev = service.findOne(toNumber(getRequestParam(AttributeConst.EMP_ID)));
+            EmployeeView ev = employeeService.findOne(toNumber(getRequestParam(AttributeConst.EMP_ID)));
 
             if(ev == null || ev.getDeleteFlag() == AttributeConst.DEL_FLAG_TRUE.getIntegerValue()) {
                 //データを取得出来なかった、または論理削除されている場合はエラー画面を表示
@@ -166,7 +173,7 @@ public class EmployeeAction extends ActionBase {
         //管理者かどうかのチェック
         if(checkAdmin()) {
             //idを条件に従業員データを取得する
-            EmployeeView ev = service.findOne(toNumber(getRequestParam(AttributeConst.EMP_ID)));
+            EmployeeView ev = employeeService.findOne(toNumber(getRequestParam(AttributeConst.EMP_ID)));
 
             if(ev == null || ev.getDeleteFlag() == AttributeConst.DEL_FLAG_TRUE.getIntegerValue()) {
                 //idを取得できなかった、または論理削除されている場合はエラー画面を表示
@@ -207,7 +214,7 @@ public class EmployeeAction extends ActionBase {
             String pepper = getContextScope(PropertyConst.PEPPER);
 
             //従業員情報更新
-            List<String> errors = service.update(ev, pepper);
+            List<String> errors = employeeService.update(ev, pepper);
 
             if(errors.size() > 0) {
                 //更新中にエラーが発生した場合
@@ -241,7 +248,7 @@ public class EmployeeAction extends ActionBase {
         if(checkToken() && checkAdmin()) {
 
             //idを条件に従業員データを論理削除する
-            service.destroy(toNumber(getRequestParam(AttributeConst.EMP_ID)));
+            employeeService.destroy(toNumber(getRequestParam(AttributeConst.EMP_ID)));
 
             //セッションに削除完了のフラッシュメッセージを設定
             putSessionScope(AttributeConst.FLUSH,MessageConst.I_DELETED.getMessage());

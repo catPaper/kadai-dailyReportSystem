@@ -16,6 +16,7 @@ import constants.JpaConst;
 import constants.MessageConst;
 import constants.ParameterConst;
 import services.ReportService;
+import services.UserTmpService;
 
 /**
  * 日報に関する処理を行うActionクラス
@@ -24,7 +25,8 @@ import services.ReportService;
  */
 public class ReportAction extends ActionBase {
 
-    private ReportService service;
+    private ReportService reportService;
+    private UserTmpService tmpService;
 
     /**
      * メソッドを実行する
@@ -32,10 +34,13 @@ public class ReportAction extends ActionBase {
     @Override
     public void process() throws ServletException, IOException {
 
-        service = new ReportService();
+        reportService = new ReportService();
+        tmpService = new UserTmpService();
 
         invoke();
-        service.close();
+
+        reportService.close();
+        tmpService.close();
     }
 
     /**
@@ -47,10 +52,10 @@ public class ReportAction extends ActionBase {
 
         //指定されたページ数の一覧画面に表示する日報データを取得
         int page = getPage();
-        List<ReportView> reports = service.getAllPerPage(page);
+        List<ReportView> reports = reportService.getAllPerPage(page);
 
         //全日報データの件数を取得
-        long reportsCount = service.countAll();
+        long reportsCount = reportService.countAll();
 
         putRequestScope(AttributeConst.REPORTS,reports);                //取得した日報データ
         putRequestScope(AttributeConst.REP_COUNT,reportsCount);         //全ての日報データの件数
@@ -78,10 +83,16 @@ public class ReportAction extends ActionBase {
         putRequestScope(AttributeConst.TOKEN,getTokenId()); //CSRF対策用トークン
 
         ReportView rv = new ReportView();
+        EmployeeView ev = (EmployeeView)getSessionScope(AttributeConst.LOGIN_EMP);
         //日報情報の空インスタンスに、日報の日付＝今日の日付を設定する
         rv.setReportDate(LocalDate.now());
-        //日報の出勤時刻と退勤時刻にデフォルト値を設定する
+        //日報の出勤時刻と退勤時刻にデフォルト値を設定する(出勤登録済みの場合は出勤時刻を設定)
+        Time punchIn = tmpService.getPuncIn(ev);
+        if(punchIn == null) {
         rv.setPunchIn(Time.valueOf(ParameterConst.DEF_REP_PUNCH_IN.getValue()));
+        }else {
+            rv.setPunchIn(punchIn);
+        }
         rv.setPunchOut(Time.valueOf(ParameterConst.DEF_REP_PUNCH_OUT.getValue()));
         putRequestScope(AttributeConst.REPORT,rv);
 
@@ -138,7 +149,7 @@ public class ReportAction extends ActionBase {
                     punchOut);
 
             //日報情報の登録
-            List<String> errors = service.create(rv);
+            List<String> errors = reportService.create(rv);
 
             if(errors.size() > 0) {
                 //登録中にエラーがあった場合
@@ -151,6 +162,9 @@ public class ReportAction extends ActionBase {
                 forward(ForwardConst.FW_REP_NEW);
             }else {
                 //登録中にエラーがなかった場合
+
+                //出勤時刻の一時データをnullにする
+                tmpService.setPunchIn(ev, null);
 
                 //セッションに登録完了のフラッシュメッセージを設定
                 putSessionScope(AttributeConst.FLUSH,MessageConst.I_REGISTERED.getMessage());
@@ -169,7 +183,7 @@ public class ReportAction extends ActionBase {
     public void show() throws ServletException,IOException{
 
         //idを条件に日報データを取得する
-        ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+        ReportView rv = reportService.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
 
         if(rv == null) {
             //該当の日報データが存在しない場合はエラー画面を表示
@@ -191,7 +205,7 @@ public class ReportAction extends ActionBase {
     public void edit() throws ServletException,IOException{
 
         //idを条件に日報データを取得する
-        ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+        ReportView rv = reportService.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
 
         //セッションからログイン中の従業員情報を取得
         EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
@@ -221,7 +235,7 @@ public class ReportAction extends ActionBase {
         if(checkToken()) {
 
             //idを条件に日報データを取得する
-            ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+            ReportView rv = reportService.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
 
             //入力された日報内容を設定する
             rv.setReportDate(toLocalDate(getRequestParam(AttributeConst.REP_DATE)));
@@ -229,7 +243,7 @@ public class ReportAction extends ActionBase {
             rv.setContent(getRequestParam(AttributeConst.REP_CONTENT));
 
             //日報データを更新する
-            List<String> errors = service.update(rv);
+            List<String> errors = reportService.update(rv);
 
             if(errors.size() > 0) {
                 //更新中にエラーが発生した場合

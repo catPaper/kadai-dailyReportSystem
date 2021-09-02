@@ -28,7 +28,7 @@ public enum AttributeConst {
     EMPLOYEE("employee"),
     EMPLOYEES("employees"),
     EMP_COUNT("employees_count"),
-    EMP_ID("id"),
+    EMP_ID("e_id"),
     EMP_CODE("code"),
     EMP_PASS("password"),
     EMP_NAME("name"),
@@ -46,12 +46,18 @@ public enum AttributeConst {
     REPORT("report"),
     REPORTS("reports"),
     REP_COUNT("reports_count"),
-    REP_ID("id"),
+    REP_ID("r_id"),
     REP_DATE("report_date"),
     REP_TITLE("title"),
     REP_CONTENT("content"),
     REP_PUNCH_IN("punch_in"),
-    REP_PUNCH_OUT("punch_out");
+    REP_PUNCH_OUT("punch_out"),
+
+    //ユーザーテンプ管理
+    TPM("uerTmp"),
+    TMPS("userTmps"),
+    TMP_ID("t_id"),
+    TMP_PUNCH_IN("t_punch_in");
 
     private final String text;
     private final Integer i;

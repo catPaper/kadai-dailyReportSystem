@@ -30,12 +30,12 @@
 <br><br>
 
 <label for="${AttributeConst.REP_PUNCH_IN.getValue()}">出勤時刻</label><br>
-<input type="time" name="${AttributeConst.REP_PUNCH_IN.getValue()}" value="<fmt:formatDate value='${report.punchIn}' pattern='HH:mm' />" step="${ParameterConst.STEP_REP_PUNCH_IN.getValue()}">
+<input type="time" name="${AttributeConst.REP_PUNCH_IN.getValue()}" value="<fmt:formatDate value='${report.punchIn}' pattern='HH:mm' />" step="${ParameterConst.STEP_REP_TIME.getIntegerValue()}">
 
 <br><br>
 
 <label for="${AttributeConst.REP_PUNCH_OUT.getValue()}">退勤時刻</label><br>
-<input type="time" name="${AttributeConst.REP_PUNCH_OUT.getValue()}" value="<fmt:formatDate value='${report.punchOut}' pattern='HH:mm' />" step="${ParameterConst.STEP_REP_PUNCH_OUT.getValue()}">
+<input type="time" name="${AttributeConst.REP_PUNCH_OUT.getValue()}" value="<fmt:formatDate value='${report.punchOut}' pattern='HH:mm' />" step="${ParameterConst.STEP_REP_TIME.getIntegerValue()}">
 <br><br>
 
 <br><br>
