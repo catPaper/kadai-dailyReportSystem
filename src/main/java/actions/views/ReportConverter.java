@@ -80,21 +80,4 @@ public class ReportConverter {
         r.setPunchIn(rv.getPunchIn());
         r.setPunchOut(rv.getPunchOut());
     }
-
-    /**
-     * DTOモデルの全フィールドの内容をViewモデルのフィールドにコピーする
-     * @param r DTOモデル(コピー元)
-     * @param rv Viewモデル(コピー先)
-     */
-    public static void copyModelToView(Report r,ReportView rv) {
-        rv.setId(r.getId());
-        rv.setEmployee(EmployeeConverter.toView(r.getEmployee()));
-        rv.setReportDate(r.getReportDate());
-        rv.setTitle(r.getTitle());
-        rv.setContent(r.getContent());
-        rv.setCreatedAt(r.getCreatedAt());
-        rv.setUpdatedAt(r.getUpdatedAt());
-        rv.setPunchIn(r.getPunchIn());
-        rv.setPunchOut(r.getPunchOut());
-    }
 }

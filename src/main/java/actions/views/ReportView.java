@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * 日報上に情報について画面の入力値・出力値を扱うViewモデル
+ * 日報情報について画面の入力値・出力値を扱うViewモデル
  * @author ryouta.osada
  *
  */
