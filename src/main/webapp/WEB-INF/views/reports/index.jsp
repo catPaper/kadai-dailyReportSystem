@@ -34,7 +34,7 @@
                         <td class = "report_title"><c:out value="${report.title}" /></td>
                         <td class = "report_punchIn"><fmt:formatDate value="${report.punchIn}" pattern="HH:mm" type="time"  /></td>
                         <td class = "report_punchOut"><fmt:formatDate value="${report.punchOut}" pattern="HH:mm" type="time "/></td>
-                        <td class = "report_action"><a href="<c:url value='?action=${actRep}&command=${commShow}&id=${report.id}' />">詳細を見る</a></td>
+                        <td class = "report_action"><a href="<c:url value='?action=${actRep}&command=${commShow}&r_id=${report.id}' />">詳細を見る</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

@@ -24,11 +24,12 @@ public class EmployeeAction extends ActionBase {
     private EmployeeService employeeService;
     private UserTmpService tmpService;
 
+
     @Override
     public void process() throws ServletException, IOException {
 
         employeeService = new EmployeeService();
-        tmpService = new UserTmpService();
+        tmpService  = new UserTmpService();
 
         //メソッドを実行
         invoke();
@@ -125,7 +126,6 @@ public class EmployeeAction extends ActionBase {
                 forward(ForwardConst.FW_EMP_NEW);
             }else {
                 //登録中にエラーがなかった場合
-
                 //従業員用のユーザーテンプデータを作成する
                 tmpService.create(ev);
 
