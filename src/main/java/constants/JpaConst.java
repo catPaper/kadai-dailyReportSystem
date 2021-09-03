@@ -46,20 +46,32 @@ public interface JpaConst {
 
     //ユーザー一時保存テーブル
     String TABLE_TMP = "userTmps";          //テーブル名
-    //ユーザー一時保存カラム
+    //ユーザー一時保存テーブルカラム
     String TMP_COL_ID = "id";                    //id
     String TMP_COL_EMP = "employee_id";     //一時保存する従業員のid
     String TMP_COL_PUNCH_IN = "punch_in";  //出勤時刻
+
+    //コメントテーブル
+    String TABLE_CMT = "comments";   //テーブル名
+    //コメントテーブルカラム
+    String CMT_COL_ID = "id";                   //id
+    String CMT_COL_REP = "report_id";           //コメントをつける日報のid
+    String CMT_COL_EMP = "employee_id";         //コメントをつけた従業員のid
+    String CMT_COL_CONTENT = "content";         //コメントの内容
+    String CMT_COL_CREATED_AT = "created_at";   //登録日時
+    String CMT_COL_UPDATED_AT = "updated_at";   //更新日時
 
     //Entity名
     String ENTITY_EMP = "employee"; //従業員
     String ENTITY_REP = "report";   //日報
     String ENTITY_TMP = "userTmp";  //ユーザー一時保存
+    String ENTITY_CMT = "comment";  //コメント
 
     //JPQLパラメータ
     String JPQL_PARM_CODE = "code";          //社員番号
     String JPQL_PARM_PASSWORD = "password"; //パスワード
     String JPQL_PARM_EMPLOYEE = "employee"; //従業員
+    String JPQL_PARM_REPORT = "report";     //日報
 
     //NamedQueryのnameとquery
     //全ての従業員をidの降順に取得する

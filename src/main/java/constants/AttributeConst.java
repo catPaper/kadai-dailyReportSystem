@@ -42,6 +42,7 @@ public enum AttributeConst {
     DEL_FLAG_TRUE(1),
     DEL_FLAG_FALSE(0),
 
+
     //日報管理
     REPORT("report"),
     REPORTS("reports"),
@@ -57,7 +58,14 @@ public enum AttributeConst {
     TPM("uerTmp"),
     TMPS("userTmps"),
     TMP_ID("t_id"),
-    TMP_PUNCH_IN("t_punch_in");
+    TMP_PUNCH_IN("t_punch_in"),
+
+    //コメント管理
+    COMMENT("comment"),
+    COMMENTS("comments"),
+    CMT_ID("c_id"),
+    CMT_CONTENT("content");
+
 
     private final String text;
     private final Integer i;
