@@ -62,6 +62,9 @@ public class ReportAction extends ActionBase {
         putRequestScope(AttributeConst.PAGE,page);                       //ページ数
         putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
 
+        //セッションスコープ内の日報データを削除
+        removeSessionScope_report();
+
         //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え
         String flush = getSessionScope(AttributeConst.FLUSH);
         if(flush != null) {

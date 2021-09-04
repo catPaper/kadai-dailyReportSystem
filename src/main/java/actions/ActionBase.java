@@ -168,6 +168,12 @@ public abstract class ActionBase {
         }
         return LocalDate.parse(strDate);
     }
+    /**
+     * セッションスコープ内の日報データを削除する
+     */
+    protected void removeSessionScope_report() {
+        removeSessionScope(AttributeConst.CMT_REPORT);
+    }
 
     /**
      * リクエストスコープから指定されたパラメータの値を取得し、返却する

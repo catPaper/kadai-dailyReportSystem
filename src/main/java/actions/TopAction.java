@@ -74,6 +74,8 @@ public class TopAction extends ActionBase {
         putRequestScope(AttributeConst.TOKEN,getTokenId());                 //CSRF対策用トークン
 
 
+        //セッションスコープ内の日報データを削除
+        removeSessionScope_report();
         //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
         String flush = getSessionScope(AttributeConst.FLUSH);
         if(flush != null) {
