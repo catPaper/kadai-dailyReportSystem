@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import constants.JpaConst;
@@ -24,6 +26,14 @@ import lombok.Setter;
  *
  */
 @Table(name = JpaConst.TABLE_CMT)
+@NamedQueries({
+    @NamedQuery(
+            name = JpaConst.Q_CMT_GET_ALL_BY_REPORT,
+            query = JpaConst.Q_CMT_GET_ALL_BY_REPORT_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_CMT_COUNT_ALL_BY_REPORT_DEF,
+            query = JpaConst.Q_CMT_COUNT_ALL_BY_REPORT_DEF)
+})
 @Getter //全てのクラスフィールドについてgetterを自動生成する(Lombok)
 @Setter //全てのクラスフィールドについてsetterを自動生成する(Lombok)
 @NoArgsConstructor //引数なしのコンストラクタを自動生成する(Lombok)
@@ -57,7 +67,7 @@ public class Comment {
      * コメントの内容
      */
     @Lob
-    @Column(name=JpaConst.CMT_COL_CONTENT,nullable = true)
+    @Column(name=JpaConst.CMT_COL_CONTENT,nullable = false)
     private String content;
 
     /**
@@ -71,5 +81,10 @@ public class Comment {
      */
     @Column(name=JpaConst.CMT_COL_UPDATED_AT,nullable = false)
     private LocalDateTime updatedAt;
+
+    /**
+     * 削除されたコメントかどうか(0:false,1:true)
+     */
+    private Integer deleteFlag;
 
 }

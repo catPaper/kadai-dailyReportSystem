@@ -30,6 +30,8 @@ public interface JpaConst {
     int ROLE_GENERAL = 0;   //管理者権限OFF(一般)
     int EMP_DEL_TRUE = 1;   //削除フラグON(削除済み)
     int EMP_DEL_FALSE = 0;  //削除フラグOFF(現役)
+    int CMT_DEL_TRUE = 1;   //削除フラグON(削除済み)
+    int CMT_DEL_FALSE = 0;  //削除フラグOFF
 
     //日報テーブル
     String TABLE_REP = "reports";   //テーブル名
@@ -60,6 +62,7 @@ public interface JpaConst {
     String CMT_COL_CONTENT = "content";         //コメントの内容
     String CMT_COL_CREATED_AT = "created_at";   //登録日時
     String CMT_COL_UPDATED_AT = "updated_at";   //更新日時
+    String CMT_COL_DELETE_FLAG = "delete_flg";  //削除フラグ
 
     //Entity名
     String ENTITY_EMP = "employee"; //従業員
@@ -104,4 +107,10 @@ public interface JpaConst {
     //指定した従業員が作成したユーザー一時情報の件数を取得する
     String Q_TMP_COUNT_ALL_MINE = ENTITY_TMP + ".countAllMine";
     String Q_TMP_COUNT_ALL_MINE_DEF = "SELECT COUNT(t) FROM UserTmp AS t WHERE t.employee = :" + JPQL_PARM_EMPLOYEE;
+    //指定した日報についたコメントデータを全件作成日時の降順で取得する
+    String Q_CMT_GET_ALL_BY_REPORT = ENTITY_CMT + ".getAllByReport";
+    String Q_CMT_GET_ALL_BY_REPORT_DEF = "SELECT c FROM Comment AS c WHERE c.report = :" + JPQL_PARM_REPORT + " ORDER BY c.created_at DESC";
+    //指定した日報についたコメントデータの件数を取得す
+    String Q_CMT_COUNT_ALL_BY_REPORT = ENTITY_CMT + ".countAllByReport";
+    String Q_CMT_COUNT_ALL_BY_REPORT_DEF = "SELECT COUNT(c) FROM Comment As c WHERE c.report = :" + JPQL_PARM_REPORT;
 }

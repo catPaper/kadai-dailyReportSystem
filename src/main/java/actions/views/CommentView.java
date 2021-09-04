@@ -47,4 +47,9 @@ public class CommentView {
      * 更新日時
      */
     private LocalDateTime updatedAt;
+
+    /**
+     * 削除されたコメントかどうか(0:false,1:true)
+     */
+    private Integer deleteFlag;
 }

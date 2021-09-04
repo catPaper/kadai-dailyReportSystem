@@ -3,6 +3,8 @@ package actions.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import constants.AttributeConst;
+import constants.JpaConst;
 import models.Comment;
 
 /**
@@ -24,7 +26,12 @@ public class CommentConverter {
                 EmployeeConverter.toModel(cv.getEmployee()),
                 cv.getContent(),
                 cv.getCreatedAt(),
-                cv.getUpdatedAt());
+                cv.getUpdatedAt(),
+                cv.getDeleteFlag() == null
+                    ? null
+                    : cv.getDeleteFlag() == AttributeConst.DEL_FLAG_FALSE.getIntegerValue()
+                        ? JpaConst.CMT_DEL_TRUE
+                        : JpaConst.CMT_DEL_FALSE);
     }
 
 
@@ -44,7 +51,12 @@ public class CommentConverter {
                 EmployeeConverter.toView(c.getEmployee()),
                 c.getContent(),
                 c.getCreatedAt(),
-                c.getUpdatedAt());
+                c.getUpdatedAt(),
+                c.getDeleteFlag() == null
+                    ? null
+                    : c.getDeleteFlag() == JpaConst.EMP_DEL_TRUE
+                        ? AttributeConst.DEL_FLAG_TRUE.getIntegerValue()
+                        : AttributeConst.DEL_FLAG_FALSE.getIntegerValue());
     }
 
     public static List<CommentView> toViewList(List<Comment> list){
@@ -69,5 +81,6 @@ public class CommentConverter {
         c.setContent(cv.getContent());
         c.setCreatedAt(cv.getCreatedAt());
         c.setUpdatedAt(cv.getUpdatedAt());
+        c.setDeleteFlag(cv.getDeleteFlag());
     }
 }
