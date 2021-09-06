@@ -31,7 +31,7 @@ import lombok.Setter;
             name = JpaConst.Q_CMT_GET_ALL_BY_REPORT,
             query = JpaConst.Q_CMT_GET_ALL_BY_REPORT_DEF),
     @NamedQuery(
-            name = JpaConst.Q_CMT_COUNT_ALL_BY_REPORT_DEF,
+            name = JpaConst.Q_CMT_COUNT_ALL_BY_REPORT,
             query = JpaConst.Q_CMT_COUNT_ALL_BY_REPORT_DEF)
 })
 @Getter //全てのクラスフィールドについてgetterを自動生成する(Lombok)
@@ -85,6 +85,7 @@ public class Comment {
     /**
      * 削除されたコメントかどうか(0:false,1:true)
      */
+    @Column(name=JpaConst.CMT_COL_DELETE_FLAG,nullable = false)
     private Integer deleteFlag;
 
 }
