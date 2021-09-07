@@ -175,3 +175,8 @@ div.commentFrame{
     border: 1px dashed #333333;
     border-radius: 5px;
 }
+
+.font_bold{
+    color:orange;
+    font-weight:bold;
+}
