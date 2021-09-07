@@ -114,7 +114,7 @@ public class CommentService extends ServiceBase {
     private void createInternal(CommentView cv) {
         em.getTransaction().begin();
         em.persist(CommentConverter.toMedel(cv));
-        em.persist(cv);
+        em.getTransaction().commit();
     }
 
     /**

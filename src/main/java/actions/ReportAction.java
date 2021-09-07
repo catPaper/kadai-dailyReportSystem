@@ -213,12 +213,12 @@ public class ReportAction extends ActionBase {
         //全コメントデータを取得
         long commentCount = commentService.countAllByReport(rv);
 
-        putRequestScope(AttributeConst.TOKEN,getTokenId());             //CSRF対策用トークン
-        putRequestScope(AttributeConst.COMMENTS,comments);              //取得したコメントデータ
-        putRequestScope(AttributeConst.CMT_COUNT,commentCount);         //全てのコメントデータの件数
-        putRequestScope(AttributeConst.PAGE,page);                      //ページ数
-        putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);  //1ページに表示するレコードの数
-        putRequestScope(AttributeConst.COMMENT,comment);                //空のコメントインスタンス
+        putRequestScope(AttributeConst.TOKEN,getTokenId());                 //CSRF対策用トークン
+        putRequestScope(AttributeConst.COMMENTS,comments);                  //取得したコメントデータ
+        putRequestScope(AttributeConst.REP_COMMENT_COUNT,commentCount);     //全てのコメントデータの件数
+        putRequestScope(AttributeConst.PAGE,page);                          //ページ数
+        putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);      //1ページに表示するレコードの数
+        putRequestScope(AttributeConst.COMMENT,comment);                    //空のコメントインスタンス
 
         //詳細画面を表示
         forward(ForwardConst.FW_REP_SHOW);

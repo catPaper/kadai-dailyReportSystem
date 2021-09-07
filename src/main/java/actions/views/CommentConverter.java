@@ -29,7 +29,7 @@ public class CommentConverter {
                 cv.getUpdatedAt(),
                 cv.getDeleteFlag() == null
                     ? null
-                    : cv.getDeleteFlag() == AttributeConst.DEL_FLAG_FALSE.getIntegerValue()
+                    : cv.getDeleteFlag() == AttributeConst.DEL_FLAG_TRUE.getIntegerValue()
                         ? JpaConst.CMT_DEL_TRUE
                         : JpaConst.CMT_DEL_FALSE);
     }

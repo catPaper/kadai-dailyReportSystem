@@ -121,6 +121,22 @@ public class ReportService extends ServiceBase {
     }
 
     /**
+     * レポートについたコメント数を１増やす
+     */
+    public void increaseCommentCount(ReportView rv) {
+        rv.setCommentCount(rv.getCommentCount() + 1);
+        updateInternal(rv);
+    }
+
+    /**
+     * レポートについたコメント数を1減らす
+     */
+    public void decreaseCommentCount(ReportView rv) {
+        rv.setCommentCount(rv.getCommentCount() - 1);
+        updateInternal(rv);
+    }
+
+    /**
      * idを条件にデータを1件取得する
      * @param id
      * @return 取得データのインスタンス
