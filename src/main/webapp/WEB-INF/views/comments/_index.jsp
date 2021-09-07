@@ -53,7 +53,7 @@
                                     </form> <script>
                                         function confirmDestroy() {
                                             if (confirm("コメントを削除しますか？")) {
-                                                document.forms[1].submit();
+                                                document.forms[0].submit();
                                             }
                                         }
                                     </script></td>

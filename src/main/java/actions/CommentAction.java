@@ -68,6 +68,14 @@ public class CommentAction extends ActionBase {
         putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);  //1ページに表示するレコードの数
         putRequestScope(AttributeConst.COMMENT,cv);                     //空のコメントインスタンス
 
+        //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移しかえ、セッションから削除する
+        String flush = getSessionScope(AttributeConst.FLUSH);
+        if(flush != null)
+        {
+            putRequestScope(AttributeConst.FLUSH,flush);
+            removeSessionScope(AttributeConst.FLUSH);
+        }
+
         //一覧画面を表示
         forward(ForwardConst.FW_CMT_INDEX);
     }
@@ -130,13 +138,26 @@ public class CommentAction extends ActionBase {
         }
     }
 
+    /**
+     * 論理削除を行う
+     * @throws ServletException
+     * @throws IOException
+     */
     public void destroy() throws ServletException,IOException{
 
         //CSRF対策 tokenチェック
         if(checkToken()){
 
             //idを条件にコメントデータを論理削除する
+            commentService.destroy(toNumber(getRequestParam(AttributeConst.CMT_ID)));
+            //日報についたコメント数を１減らす
+            reportService.decreaseCommentCount((ReportView)getSessionScope(AttributeConst.CMT_REPORT));
 
+            //セッションに削除官僚のフラッシュメッセージを設定
+            putSessionScope(AttributeConst.FLUSH,MessageConst.I_DELETED.getMessage());
+
+            //一覧画面にリダイレクト
+            redirect(ForwardConst.ACT_CMT,ForwardConst.CMD_INDEX);
         }
     }
 
