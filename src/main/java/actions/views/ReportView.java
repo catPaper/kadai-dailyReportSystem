@@ -65,4 +65,9 @@ public class ReportView {
      */
     private Time punchOut;
 
+    /**
+     * レポートにつけられたコメントの数
+     */
+    private Integer commentCount;
+
 }

@@ -11,10 +11,12 @@ import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import services.CommentService;
+import services.ReportService;
 
 public class CommentAction extends ActionBase {
 
     private CommentService commentService;
+    private ReportService reportService;
 
     /**
      * メソッドを実行する
@@ -23,10 +25,12 @@ public class CommentAction extends ActionBase {
     public void process() throws ServletException, IOException {
 
         commentService = new CommentService();
+        reportService = new ReportService();
 
         invoke();
 
         commentService.close();
+        reportService.close();
     }
     /**
      * 一覧画面を表示する
@@ -36,6 +40,18 @@ public class CommentAction extends ActionBase {
     public void index() throws ServletException,IOException{
 
         ReportView report = (ReportView)getSessionScope(AttributeConst.CMT_REPORT);
+        //日報一覧から来た場合は、レポートidをもとにセッションスコープにレポートをセットする
+        if(report == null) {
+            report = reportService.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+            //見つからない場合エラーページを表示
+            if(report == null) {
+                forward(ForwardConst.FW_ERR_UNKNOWN);
+                return;
+            }else {
+                putSessionScope(AttributeConst.CMT_REPORT,report);
+            }
+        }
+
         CommentView comment = new CommentView();
         //指定されたページ数の一覧画面に表示するコメントデータを取得
         int page = getPage();

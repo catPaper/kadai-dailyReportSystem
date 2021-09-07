@@ -36,15 +36,16 @@ public interface JpaConst {
     //日報テーブル
     String TABLE_REP = "reports";   //テーブル名
     //日報テーブルカラム
-    String REP_COL_ID = "id";                   //id
-    String REP_COL_EMP = "employee_id";         //日報を作成した従業員のid
-    String REP_COL_REP_DATE = "report_date";    //いつの日報か示す日付
-    String REP_COL_TITLE = "title";             //日報のタイトル
-    String REP_COL_CONTENT = "content";         //日報の内容
-    String REP_COL_CREATED_AT = "created_at";   //登録日時
-    String REP_COL_UPDATED_AT = "updated_at";   //更新日時
-    String REP_COL_PUNCH_IN = "punch_in";       //出勤時刻
-    String REP_COL_PUNCH_OUT = "punch_out";     //退勤時刻
+    String REP_COL_ID = "id";                       //id
+    String REP_COL_EMP = "employee_id";             //日報を作成した従業員のid
+    String REP_COL_REP_DATE = "report_date";        //いつの日報か示す日付
+    String REP_COL_TITLE = "title";                 //日報のタイトル
+    String REP_COL_CONTENT = "content";             //日報の内容
+    String REP_COL_CREATED_AT = "created_at";       //登録日時
+    String REP_COL_UPDATED_AT = "updated_at";       //更新日時
+    String REP_COL_PUNCH_IN = "punch_in";           //出勤時刻
+    String REP_COL_PUNCH_OUT = "punch_out";         //退勤時刻
+    String REP_COL_COMMENT_COUNT = "comment_count"; //レポートに書かれたコメントの数
 
     //ユーザー一時保存テーブル
     String TABLE_TMP = "userTmps";          //テーブル名
@@ -110,7 +111,7 @@ public interface JpaConst {
     //指定した日報についたコメントデータを全件作成日時の降順で取得する
     String Q_CMT_GET_ALL_BY_REPORT = ENTITY_CMT + ".getAllByReport";
     String Q_CMT_GET_ALL_BY_REPORT_DEF = "SELECT c FROM Comment AS c WHERE c.report = :" + JPQL_PARM_REPORT + " ORDER BY c.createdAt DESC";
-    //指定した日報についたコメントデータの件数を取得す
+    //指定した日報についたコメントデータの件数を取得する
     String Q_CMT_COUNT_ALL_BY_REPORT = ENTITY_CMT + ".countAllByReport";
     String Q_CMT_COUNT_ALL_BY_REPORT_DEF = "SELECT COUNT(c) FROM Comment As c WHERE c.report = :" + JPQL_PARM_REPORT;
 }

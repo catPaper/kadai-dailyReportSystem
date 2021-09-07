@@ -4,6 +4,7 @@
 <%@ page import="constants.ForwardConst" %>
 
 <c:set var="actRep" value="${ForwardConst.ACT_REP.getValue()}" />
+<c:set var="actCmt" value="${ForwardConst.ACT_CMT.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commShow" value="${ForwardConst.CMD_SHOW.getValue()}" />
 <c:set var="commNew" value="${ForwardConst.CMD_NEW.getValue()}" />
@@ -25,6 +26,7 @@
                     <th class = "report_punchIn">出勤時刻</th>
                     <th class = "report_puncOut">退勤時刻</th>
                     <th class = "repot_action">操作</th>
+                    <th class = "report_comment">コメント</th>
                 </tr>
                 <c:forEach var="report" items="${reports}" varStatus="status">
                     <fmt:parseDate value="${report.reportDate}" pattern="yyyy-MM-dd" var="reportDay" type="date" />
@@ -35,6 +37,9 @@
                         <td class = "report_punchIn"><fmt:formatDate value="${report.punchIn}" pattern="HH:mm" type="time"  /></td>
                         <td class = "report_punchOut"><fmt:formatDate value="${report.punchOut}" pattern="HH:mm" type="time "/></td>
                         <td class = "report_action"><a href="<c:url value='?action=${actRep}&command=${commShow}&r_id=${report.id}' />">詳細を見る</a></td>
+                        <td class = "report_comment">
+                            <a href="<c:url value='?action=${actCmt}&command=${commIdx}&r_id=${report.id}' />">コメント(${report.commentCount})</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>

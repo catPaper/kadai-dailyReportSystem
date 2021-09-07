@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+import actions.views.CommentView;
 import actions.views.EmployeeView;
 import actions.views.ReportView;
 import constants.AttributeConst;
@@ -15,6 +16,7 @@ import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
 import constants.ParameterConst;
+import services.CommentService;
 import services.ReportService;
 import services.UserTmpService;
 
@@ -27,6 +29,7 @@ public class ReportAction extends ActionBase {
 
     private ReportService reportService;
     private UserTmpService tmpService;
+    private CommentService commentService;
 
     /**
      * メソッドを実行する
@@ -36,11 +39,13 @@ public class ReportAction extends ActionBase {
 
         reportService = new ReportService();
         tmpService = new UserTmpService();
+        commentService = new CommentService();
 
         invoke();
 
         reportService.close();
         tmpService.close();
+        commentService.close();
     }
 
     /**
@@ -149,7 +154,8 @@ public class ReportAction extends ActionBase {
                     null,
                     null,
                     punchIn,
-                    punchOut);
+                    punchOut,
+                    0);
 
             //日報情報の登録
             List<String> errors = reportService.create(rv);
@@ -185,19 +191,37 @@ public class ReportAction extends ActionBase {
      */
     public void show() throws ServletException,IOException{
 
-        //idを条件に日報データを取得する
-        ReportView rv = reportService.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+        ReportView rv = (ReportView)getSessionScope(AttributeConst.CMT_REPORT);
 
+      //日報一覧から来た場合は、レポートidをもとにセッションスコープにレポートをセットする
         if(rv == null) {
-            //該当の日報データが存在しない場合はエラー画面を表示
-            forward(ForwardConst.FW_ERR_UNKNOWN);
-        }else {
-
-            putRequestScope(AttributeConst.REPORT,rv);
-
-            //詳細画面を表示
-            forward(ForwardConst.FW_REP_SHOW);
+            rv = reportService.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+            //見つからない場合エラーページを表示
+            if(rv == null) {
+                forward(ForwardConst.FW_ERR_UNKNOWN);
+                return;
+            }else {
+                putSessionScope(AttributeConst.CMT_REPORT,rv);
+            }
         }
+        putRequestScope(AttributeConst.REPORT,rv);
+
+        CommentView comment = new CommentView();
+        //指定されたページ数の一覧画面に表示するコメントデータを取得
+        int page = getPage();
+        List<CommentView> comments = commentService.getAllByReportPerPage(rv, page);
+        //全コメントデータを取得
+        long commentCount = commentService.countAllByReport(rv);
+
+        putRequestScope(AttributeConst.TOKEN,getTokenId());             //CSRF対策用トークン
+        putRequestScope(AttributeConst.COMMENTS,comments);              //取得したコメントデータ
+        putRequestScope(AttributeConst.CMT_COUNT,commentCount);         //全てのコメントデータの件数
+        putRequestScope(AttributeConst.PAGE,page);                      //ページ数
+        putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);  //1ページに表示するレコードの数
+        putRequestScope(AttributeConst.COMMENT,comment);                //空のコメントインスタンス
+
+        //詳細画面を表示
+        forward(ForwardConst.FW_REP_SHOW);
     }
 
     /**

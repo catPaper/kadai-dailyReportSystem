@@ -3,7 +3,7 @@
 <%@ page import="constants.AttributeConst" %>
 <%@ page import="constants.ForwardConst" %>
 
-<c:set var="actCmt" vlaue="${ForwardConst.ACT_CMT.getValue()}" />
+<c:set var="actCmt" value="${ForwardConst.ACT_CMT.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 
 <c:if test="${errors != null }">
@@ -15,13 +15,13 @@
     </div>
 </c:if>
 
-<label for="name">氏名</label>
-<c:out value="{sessionScope.login_employee.name}" />
+<label for="name">氏名</label><br>
+<c:out value="${sessionScope.login_employee.name}" />
 <br><br>
-<label for="${AttributeConst.CMT_CONTENT.getValue()}">内容</label>
-<textarea name="${AttributeConst.CMT_CONTENT.getValue()}" rows="10" cols="25">${comment.content}</textarea>
+<label for="${AttributeConst.CMT_CONTENT.getValue()}">内容</label><br>
+<textarea name="${AttributeConst.CMT_CONTENT.getValue()}" rows="5" cols="45">${comment.content}</textarea>
 <br><br>
 
-<input type="hidden" name="${AttributeConst.CMT_ID.getValue}" value="${comment.id}" />
-<input type="hidden" name="${AttributeConst.TOKEN.getValue}" value="${_token}" />
+<input type="hidden" name="${AttributeConst.CMT_ID.getValue()}" value="${comment.id}" />
+<input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
 <button type="submit">コメントする</button>

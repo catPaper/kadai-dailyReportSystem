@@ -28,7 +28,8 @@ public class ReportConverter {
                 rv.getCreatedAt(),
                 rv.getUpdatedAt(),
                 rv.getPunchIn(),
-                rv.getPunchOut());
+                rv.getPunchOut(),
+                rv.getCommentCount());
     }
 
     /**
@@ -50,7 +51,8 @@ public class ReportConverter {
                 r.getCreatedAt(),
                 r.getUpdatedAt(),
                 r.getPunchIn(),
-                r.getPunchOut());
+                r.getPunchOut(),
+                r.getCommentCount());
     }
 
 
@@ -79,5 +81,6 @@ public class ReportConverter {
         r.setUpdatedAt(rv.getUpdatedAt());
         r.setPunchIn(rv.getPunchIn());
         r.setPunchOut(rv.getPunchOut());
+        r.setCommentCount(rv.getCommentCount());
     }
 }

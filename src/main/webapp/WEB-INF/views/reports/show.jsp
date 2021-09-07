@@ -51,6 +51,12 @@
             <p><a href="<c:url value='?action=${actRep}&command=${commEdt}&r_id=${report.id}' />">この日報を編集する</a></p>
         </c:if>
 
+        <br><br>
+
+        <c:import url="../comments/_index.jsp" />
+
+        <br><br>
+
         <p><a href="<c:url value='?action=${actRep}&command=${commIdx}' />">一覧に戻る</a></p>
     </c:param>
 </c:import>
