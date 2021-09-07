@@ -38,7 +38,7 @@
 <input type="time" name="${AttributeConst.REP_PUNCH_OUT.getValue()}" value="<fmt:formatDate value='${report.punchOut}' pattern='HH:mm' />" step="${ParameterConst.STEP_REP_TIME.getIntegerValue()}">
 <br><br>
 
-<br><br>
+<br>
 
 <input type="hidden" name="${AttributeConst.REP_ID.getValue()}" value="${report.id}" />
 <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
