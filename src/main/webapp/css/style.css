@@ -168,3 +168,10 @@ table#report_list .report_action {
 pre {
     font-family: "Hiragino Kaku Gothic Pro",Meiryo,"MS PGothic",Helvetica,Arial,sans-serif;
 }
+
+div.commentFrame{
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px dashed #333333;
+    border-radius: 5px;
+}

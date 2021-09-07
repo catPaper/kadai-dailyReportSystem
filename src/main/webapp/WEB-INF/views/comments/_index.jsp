@@ -24,45 +24,49 @@
     <c:otherwise>
         <h2>コメント一覧</h2>
 
-        <table>
-            <c:forEach var="comment" items="${comments}" varStatus="status">
-                <tr>
-                    <c:choose>
-                        <c:when test="${comment.deleteFlag == 1}">
-                            <td>[メッセージは削除されました]</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td><c:out value="${comment.employee.name}" /></td>
-                            <td><c:out value="${comment.content}" /></td>
-                            <fmt:parseDate value="${comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="createDay" type="date" />
-                            <td><fmt:formatDate value="${createDay}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                            <c:if
-                                test="${sessionScope.login_employee.id == comment.employee.id}">
-                                <td><a
-                                    href="<c:url
-                                            value='?action=${actCmt}&command=${commEdit}&c_id=${comment.id}' />">コメントを編集する
-                                </a></td>
-                                <td><a href="#" onclick="confirmDestroy(${comment.id});">コメントを削除する</a>
-                                    <form name = "del${comment.id}" method="POST"
-                                        action="<c:url value='?action=${actCmt}&command=${commDel}' />">
-                                        <input type="hidden"
-                                            name="${AttributeConst.CMT_ID.getValue()}"
-                                            value="${comment.id}" />
-                                        <input type="hidden"
-                                            name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
-                                    </form> <script>
-                                        function confirmDestroy(i) {
-                                            if (confirm("コメントを削除しますか？")) {
-                                                document.forms["del"+i].submit();
-                                            }
-                                        }
-                                    </script></td>
-                            </c:if>
-                        </c:otherwise>
-                    </c:choose>
-                </tr>
-            </c:forEach>
-        </table>
+        <c:forEach var="comment" items="${comments}" varStatus="status">
+            <c:choose>
+                <c:when test="${comment.deleteFlag == 1}">
+                    <div>[メッセージは削除されました]</div>
+                </c:when>
+                <c:otherwise>
+                    <div class = "commentFrame">
+                        <p>
+                        <c:out value="${comment.employee.name}" />&nbsp;&nbsp;
+                        <fmt:parseDate value="${comment.createdAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="createDay" type="date" />
+                        <fmt:formatDate value="${createDay}" pattern="yyyy-MM-dd HH:mm:ss"/>&nbsp;&nbsp;
+                        <c:if test="${comment.createdAt != comment.updatedAt}">（編集済み）</c:if>
+                        </p>
+                        <pre><c:out value="${comment.content}" /></pre>
+                        <c:if test="${sessionScope.login_employee.id == comment.employee.id}">
+                            <p>
+                                <a href="<c:url
+                                    value='?action=${actCmt}&command=${commEdit}&c_id=${comment.id}' />">
+                                    コメントを編集する </a>&nbsp;&nbsp;
+                                <a href="#"
+                                    onclick="confirmDestroy(${comment.id});">
+                                    コメントを削除する</a>
+                             </p>
+
+                            <form name="del${comment.id}" method="POST"
+                                action="<c:url value='?action=${actCmt}&command=${commDel}' />">
+                                <input type="hidden" name="${AttributeConst.CMT_ID.getValue()}"
+                                    value="${comment.id}" /> <input type="hidden"
+                                    name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
+                            </form>
+                            <script>
+                                function confirmDestroy(i) {
+                                    if (confirm("コメントを削除しますか？")) {
+                                        document.forms["del"+i].submit();
+                                    }
+                                }
+                            </script>
+                        </c:if>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+            <br>
+        </c:forEach>
 
         <div id="pagination">
             （全 ${comment_count}件）<br>
