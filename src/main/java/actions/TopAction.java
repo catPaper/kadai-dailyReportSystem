@@ -94,7 +94,7 @@ public class TopAction extends ActionBase {
         putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);      //1ページに表示するレコードの数
         putRequestScope(AttributeConst.TMP_PUNCH_IN,punchIn);               //ログイン中の従業員の出勤時刻情報
         putRequestScope(AttributeConst.TOKEN,getTokenId());                 //CSRF対策用トークン
-        putRequestScope(AttributeConst.REP_SHOW_UNREAD,isShow);   //未読コメントのある日報のみを表示するかどうか
+        putRequestScope(AttributeConst.REP_SHOW_UNREAD,isShow);             //未読コメントのある日報のみを表示するかどうか
         putRequestScope(AttributeConst.REP_EXIST_UNREAD,exist_unread);      //未読コメントがついた日報が存在するかどうか
 
 
