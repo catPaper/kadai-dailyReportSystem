@@ -54,6 +54,7 @@ public enum AttributeConst {
     REP_PUNCH_IN("punch_in"),
     REP_PUNCH_OUT("punch_out"),
     REP_COMMENT_COUNT("comment_count"),
+    REP_NODELETE_COMMENT_COUNT("nodelete_comment_count"),
 
     //ユーザーテンプ管理
     TPM("uerTmp"),

@@ -44,7 +44,19 @@ public class CommentService extends ServiceBase {
                 .getSingleResult();
 
         return count;
+    }
 
+    /**
+     * 指定した日報についたコメントデータの件数を取得する(論理削除されたデータを除く)
+     * @param report
+     * @return
+     */
+    public long countNoDeleteByReport(ReportView report) {
+        long count = (long)em.createNamedQuery(JpaConst.Q_CMT_COUNT_NODELETE_BY_REPORT,Long.class)
+                .setParameter(JpaConst.JPQL_PARM_REPORT, ReportConverter.toModel(report))
+                .getSingleResult();
+
+        return count;
     }
 
     /**

@@ -18,7 +18,7 @@
 </c:if>
 
 <c:choose>
-    <c:when test="${comment_count == null || comment_count == 0}">
+    <c:when test="${nodelete_comment_count == null || nodelete_comment_count == 0}">
         <h2>コメントはまだありません</h2>
     </c:when>
     <c:otherwise>
@@ -40,10 +40,10 @@
                                 test="${sessionScope.login_employee.id == comment.employee.id}">
                                 <td><a
                                     href="<c:url
-                                            value='?action=${actCmt}&commmand=${commEdit}&c_id=${comment.id}' />">コメントを編集する
+                                            value='?action=${actCmt}&command=${commEdit}&c_id=${comment.id}' />">コメントを編集する
                                 </a></td>
-                                <td><a href="#" onclick="confirmDestroy();">コメントを削除する</a>
-                                    <form method="POST"
+                                <td><a href="#" onclick="confirmDestroy(${comment.id});">コメントを削除する</a>
+                                    <form name = "del${comment.id}" method="POST"
                                         action="<c:url value='?action=${actCmt}&command=${commDel}' />">
                                         <input type="hidden"
                                             name="${AttributeConst.CMT_ID.getValue()}"
@@ -51,9 +51,9 @@
                                         <input type="hidden"
                                             name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
                                     </form> <script>
-                                        function confirmDestroy() {
+                                        function confirmDestroy(i) {
                                             if (confirm("コメントを削除しますか？")) {
-                                                document.forms[0].submit();
+                                                document.forms["del"+i].submit();
                                             }
                                         }
                                     </script></td>

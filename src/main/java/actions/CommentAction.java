@@ -60,13 +60,15 @@ public class CommentAction extends ActionBase {
         List<CommentView> comments = commentService.getAllByReportPerPage(rv, page);
         //全コメントデータを取得
         long commentCount = commentService.countAllByReport(rv);
+        long noDeleteCommentCount = commentService.countNoDeleteByReport(rv);
 
-        putRequestScope(AttributeConst.TOKEN,getTokenId());             //CSRF対策用トークン
-        putRequestScope(AttributeConst.COMMENTS,comments);              //取得したコメントデータ
-        putRequestScope(AttributeConst.REP_COMMENT_COUNT,commentCount);         //全てのコメントデータの件数
-        putRequestScope(AttributeConst.PAGE,page);                      //ページ数
-        putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);  //1ページに表示するレコードの数
-        putRequestScope(AttributeConst.COMMENT,cv);                     //空のコメントインスタンス
+        putRequestScope(AttributeConst.TOKEN,getTokenId());                                 //CSRF対策用トークン
+        putRequestScope(AttributeConst.COMMENTS,comments);                                  //取得したコメントデータ
+        putRequestScope(AttributeConst.REP_NODELETE_COMMENT_COUNT,noDeleteCommentCount);    //論理削除されていないコメント数
+        putRequestScope(AttributeConst.REP_COMMENT_COUNT,commentCount);                     //全てのコメントデータの件数
+        putRequestScope(AttributeConst.PAGE,page);                                          //ページ数
+        putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);                      //1ページに表示するレコードの数
+        putRequestScope(AttributeConst.COMMENT,cv);                                         //空のコメントインスタンス
 
         //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移しかえ、セッションから削除する
         String flush = getSessionScope(AttributeConst.FLUSH);
@@ -108,13 +110,15 @@ public class CommentAction extends ActionBase {
             List<CommentView> comments = commentService.getAllByReportPerPage(rv, page);
             //全コメントデータを取得
             long commentCount = commentService.countAllByReport(rv);
+            long noDeleteCommentCount = commentService.countNoDeleteByReport(rv);
 
-            putRequestScope(AttributeConst.TOKEN,getTokenId()); //CSRF対策用トークン
-            putRequestScope(AttributeConst.COMMENTS,comments);              //取得したコメントデータ
-            putRequestScope(AttributeConst.REP_COMMENT_COUNT,commentCount);         //全てのコメントデータの件数
-            putRequestScope(AttributeConst.PAGE,page);                      //ページ数
-            putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);  //1ページに表示するレコードの数
-            putRequestScope(AttributeConst.COMMENT,cv);                     //入力されたコメント情報
+            putRequestScope(AttributeConst.TOKEN,getTokenId());                                 //CSRF対策用トークン
+            putRequestScope(AttributeConst.COMMENTS,comments);                                  //取得したコメントデータ
+            putRequestScope(AttributeConst.REP_NODELETE_COMMENT_COUNT,noDeleteCommentCount);    //論理削除されていないコメント数
+            putRequestScope(AttributeConst.REP_COMMENT_COUNT,commentCount);                     //全てのコメントデータの件数
+            putRequestScope(AttributeConst.PAGE,page);                                          //ページ数
+            putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);                      //1ページに表示するレコードの数
+            putRequestScope(AttributeConst.COMMENT,cv);                                         //入力されたコメント情報
 
             //コメント情報の登録
             List<String> errors = commentService.create(cv);
@@ -158,6 +162,69 @@ public class CommentAction extends ActionBase {
 
             //一覧画面にリダイレクト
             redirect(ForwardConst.ACT_CMT,ForwardConst.CMD_INDEX);
+        }
+    }
+
+    /**
+     * 編集画面を表示する
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void edit() throws ServletException,IOException{
+
+        //idを条件にコメントデータを取得する
+        CommentView cv = commentService.findOne(toNumber(getRequestParam(AttributeConst.CMT_ID)));
+
+        //セッションからログイン中の従業員情報を取得
+        EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
+
+        if(cv == null || ev.getId() != cv.getEmployee().getId() || cv.getDeleteFlag() == AttributeConst.DEL_FLAG_TRUE.getIntegerValue()) {
+            //該当のコメントデータが存在しない、または
+            //ログインしている従業員が日報の作成者でない場合または
+            //コメントが論理削除されている場合はエラー画面を表示
+            forward(ForwardConst.FW_ERR_UNKNOWN);
+        }else {
+
+            putRequestScope(AttributeConst.TOKEN,getTokenId()); //CSRF対策用トークン
+            putRequestScope(AttributeConst.COMMENT,cv);          //取得したコメントデータ
+
+            //編集画面を表示
+            forward(ForwardConst.FW_CMT_EDIT);
+        }
+    }
+
+    /**
+     * 更新を行う
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void update() throws ServletException,IOException{
+        //CSRF対策 tokenチェック
+        if(checkToken()) {
+            //idを条件にコメントデータを取得する
+            CommentView cv = commentService.findOne(toNumber(getRequestParam(AttributeConst.CMT_ID)));
+
+            //入力されたコメント内容を確定する
+            cv.setContent(getRequestParam(AttributeConst.CMT_CONTENT));
+
+            //コメントデータを更新する
+            List<String> errors = commentService.update(cv);
+
+            if(errors.size() > 0) {
+                //更新中にエラーが発生した場合
+
+                putRequestScope(AttributeConst.TOKEN,getTokenId()); //CSRF対策用トークン
+                putRequestScope(AttributeConst.COMMENT,cv);         //入力されたコメントデータ
+                putRequestScope(AttributeConst.ERR,errors);         //エラーのリスト
+            }else {
+                //更新中にエラーなかった場合
+
+                //セッションに更新完了のフラッシュメッセージを設定
+                putSessionScope(AttributeConst.FLUSH,MessageConst.I_UPDATED.getMessage());
+
+                //一覧画面にリダイレクト
+                redirect(ForwardConst.ACT_CMT,ForwardConst.CMD_INDEX);
+            }
         }
     }
 

@@ -32,7 +32,10 @@ import lombok.Setter;
             query = JpaConst.Q_CMT_GET_ALL_BY_REPORT_DEF),
     @NamedQuery(
             name = JpaConst.Q_CMT_COUNT_ALL_BY_REPORT,
-            query = JpaConst.Q_CMT_COUNT_ALL_BY_REPORT_DEF)
+            query = JpaConst.Q_CMT_COUNT_ALL_BY_REPORT_DEF),
+    @NamedQuery(
+            name = JpaConst.Q_CMT_COUNT_NODELETE_BY_REPORT,
+            query = JpaConst.Q_CMT_COUNT_NODELETE_BY_REPORT_DEF)
 })
 @Getter //全てのクラスフィールドについてgetterを自動生成する(Lombok)
 @Setter //全てのクラスフィールドについてsetterを自動生成する(Lombok)
