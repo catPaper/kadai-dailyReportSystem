@@ -23,6 +23,10 @@
                     <td><fmt:formatDate value="${reportDay}" pattern="yyyy-MM-dd" /></td>
                 </tr>
                 <tr>
+                    <th>タイトル</th>
+                    <td><c:out value="${report.title}" /></td>
+                </tr>
+                <tr>
                     <th>内容</th>
                     <td><pre><c:out value="${report.content}" /></pre></td>
                 </tr>
