@@ -7,6 +7,7 @@ import actions.views.EmployeeConverter;
 import actions.views.EmployeeView;
 import actions.views.ReportConverter;
 import actions.views.ReportView;
+import constants.AttributeConst;
 import constants.JpaConst;
 import models.Report;
 import models.validators.ReportValidator;
@@ -133,6 +134,35 @@ public class ReportService extends ServiceBase {
      */
     public void decreaseCommentCount(ReportView rv) {
         rv.setCommentCount(rv.getCommentCount() - 1);
+        updateInternal(rv);
+    }
+
+
+    /**
+     * コメントが閲覧済みかどうか
+     * @param rv
+     * @return true:閲覧済み false:未読
+     */
+    public boolean isReadComment(ReportView rv) {
+        boolean isRead = (rv.getIsReadComment() == AttributeConst.READ_FLAG_TRUE.getIntegerValue());
+        return isRead;
+    }
+
+    /**
+     * コメントを閲覧済みにする
+     * @param rv
+     */
+    public void setReadComment(ReportView rv) {
+        rv.setIsReadComment(AttributeConst.READ_FLAG_TRUE.getIntegerValue());
+        updateInternal(rv);
+    }
+
+    /**
+     * コメントを未読にする
+     * @param rv
+     */
+    public void setUnReadComment(ReportView rv) {
+        rv.setIsReadComment(AttributeConst.READ_FLAG_FALSE.getIntegerValue());
         updateInternal(rv);
     }
 

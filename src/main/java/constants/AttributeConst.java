@@ -42,6 +42,10 @@ public enum AttributeConst {
     DEL_FLAG_TRUE(1),
     DEL_FLAG_FALSE(0),
 
+    //閲覧フラグ
+    READ_FLAG_TRUE(1),
+    READ_FLAG_FALSE(0),
+
 
     //日報管理
     REPORT("report"),

@@ -155,7 +155,8 @@ public class ReportAction extends ActionBase {
                     null,
                     punchIn,
                     punchOut,
-                    0);
+                    AttributeConst.DEL_FLAG_FALSE.getIntegerValue(),
+                    AttributeConst.READ_FLAG_TRUE.getIntegerValue());
 
             //日報情報の登録
             List<String> errors = reportService.create(rv);
@@ -213,6 +214,12 @@ public class ReportAction extends ActionBase {
         //全コメントデータを取得
         long commentCount = commentService.countAllByReport(rv);
         long noDeleteCommentCount = commentService.countNoDeleteByReport(rv);
+
+        //閲覧者が日報作成者で、日報がコメント未読状態の場合は閲覧済みに設定する
+        EmployeeView ev = getSessionScope(AttributeConst.LOGIN_EMP);
+        if(ev.getId() == rv.getEmployee().getId() && !reportService.isReadComment(rv)) {
+            reportService.setReadComment(rv);
+        }
 
         putRequestScope(AttributeConst.TOKEN,getTokenId());                                 //CSRF対策用トークン
         putRequestScope(AttributeConst.COMMENTS,comments);                                  //取得したコメントデータ

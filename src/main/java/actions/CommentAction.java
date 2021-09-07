@@ -62,6 +62,12 @@ public class CommentAction extends ActionBase {
         long commentCount = commentService.countAllByReport(rv);
         long noDeleteCommentCount = commentService.countNoDeleteByReport(rv);
 
+        //閲覧者が日報作成者で、日報がコメント未読状態の場合は閲覧済みに設定する
+        EmployeeView ev = getSessionScope(AttributeConst.LOGIN_EMP);
+        if(ev.getId() == rv.getEmployee().getId() && !reportService.isReadComment(rv)) {
+            reportService.setReadComment(rv);
+        }
+
         putRequestScope(AttributeConst.TOKEN,getTokenId());                                 //CSRF対策用トークン
         putRequestScope(AttributeConst.COMMENTS,comments);                                  //取得したコメントデータ
         putRequestScope(AttributeConst.REP_NODELETE_COMMENT_COUNT,noDeleteCommentCount);    //論理削除されていないコメント数
@@ -135,6 +141,10 @@ public class CommentAction extends ActionBase {
                 putSessionScope(AttributeConst.FLUSH,MessageConst.I_REGISTERED.getMessage());
                 //レポートのコメント数を１増やす
                 reportService.increaseCommentCount(rv);
+                //コメント主が日報作成者以外の場合は日報にコメント未読をつける
+                if(cv.getEmployee().getId() != rv.getEmployee().getId()) {
+                    reportService.setUnReadComment(rv);
+                }
 
                 //一覧画面にリダイレクト
                 redirect(ForwardConst.ACT_CMT,ForwardConst.CMD_INDEX);

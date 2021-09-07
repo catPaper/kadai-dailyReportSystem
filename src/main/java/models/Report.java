@@ -107,6 +107,15 @@ public class Report {
     @Column(name = JpaConst.REP_COL_PUNCH_OUT,nullable = false)
     private Time punchOut;
 
+    /**
+     * 日報についたコメントの数
+     */
     @Column(name = JpaConst.REP_COL_COMMENT_COUNT,nullable = false,columnDefinition = "integer default 0")
     private Integer commentCount;
+
+    /**
+     * 新しいコメントを見たか
+     */
+    @Column(name = JpaConst.REP_COL_IS_READ_COMMENT,nullable = false,columnDefinition = "integer default 1")
+    private Integer isReadComment;
 }

@@ -69,7 +69,13 @@
                         <td class="repot_action"><a
                             href="<c:url value='?action=${actRep}&command=${commShow}&r_id=${report.id}' />">詳細を見る</a></td>
                         <td class = "report_comment">
-                            <a href="<c:url value='?action=${actCmt}&command=${commIdx}&r_id=${report.id}' />">コメント(${report.commentCount})</a>
+                            <a href="<c:url value='?action=${actCmt}&command=${commIdx}&r_id=${report.id}' />">
+                            コメント(${report.commentCount})<br>
+                            <c:if test="${sessionScope.login_employee.id == report.employee.id &&
+                                        report.isReadComment == 0}">
+                                未読メッセージ
+                            </c:if>
+                            </a>
                         </td>
                     </tr>
                 </c:forEach>

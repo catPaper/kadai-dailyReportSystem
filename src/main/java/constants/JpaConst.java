@@ -26,32 +26,35 @@ public interface JpaConst {
     String EMP_COL_UPDATED_AT = "updated_at";   //更新日時
     String EMP_COL_DELETE_FLAG = "delete_flag"; //削除フラグ
 
-    int ROLE_ADMIN = 1;     //管理者権限ON(管理者)
-    int ROLE_GENERAL = 0;   //管理者権限OFF(一般)
-    int EMP_DEL_TRUE = 1;   //削除フラグON(削除済み)
-    int EMP_DEL_FALSE = 0;  //削除フラグOFF(現役)
-    int CMT_DEL_TRUE = 1;   //削除フラグON(削除済み)
-    int CMT_DEL_FALSE = 0;  //削除フラグOFF
+    int ROLE_ADMIN = 1;         //管理者権限ON(管理者)
+    int ROLE_GENERAL = 0;       //管理者権限OFF(一般)
+    int EMP_DEL_TRUE = 1;       //削除フラグON(削除済み)
+    int EMP_DEL_FALSE = 0;      //削除フラグOFF(現役)
+    int CMT_DEL_TRUE = 1;       //削除フラグON(削除済み)
+    int CMT_DEL_FALSE = 0;      //削除フラグOFF
+    int REP_READ_CMT_TRUE = 1;   //コメント閲覧フラグON(閲覧済み)
+    int REP_READ_CMT_FALSE = 0;  //コメント閲覧フラグOFF(未読)
 
     //日報テーブル
     String TABLE_REP = "reports";   //テーブル名
     //日報テーブルカラム
-    String REP_COL_ID = "id";                       //id
-    String REP_COL_EMP = "employee_id";             //日報を作成した従業員のid
-    String REP_COL_REP_DATE = "report_date";        //いつの日報か示す日付
-    String REP_COL_TITLE = "title";                 //日報のタイトル
-    String REP_COL_CONTENT = "content";             //日報の内容
-    String REP_COL_CREATED_AT = "created_at";       //登録日時
-    String REP_COL_UPDATED_AT = "updated_at";       //更新日時
-    String REP_COL_PUNCH_IN = "punch_in";           //出勤時刻
-    String REP_COL_PUNCH_OUT = "punch_out";         //退勤時刻
-    String REP_COL_COMMENT_COUNT = "comment_count"; //レポートに書かれたコメントの数
+    String REP_COL_ID = "id";                           //id
+    String REP_COL_EMP = "employee_id";                 //日報を作成した従業員のid
+    String REP_COL_REP_DATE = "report_date";            //いつの日報か示す日付
+    String REP_COL_TITLE = "title";                     //日報のタイトル
+    String REP_COL_CONTENT = "content";                 //日報の内容
+    String REP_COL_CREATED_AT = "created_at";           //登録日時
+    String REP_COL_UPDATED_AT = "updated_at";           //更新日時
+    String REP_COL_PUNCH_IN = "punch_in";               //出勤時刻
+    String REP_COL_PUNCH_OUT = "punch_out";             //退勤時刻
+    String REP_COL_COMMENT_COUNT = "comment_count";     //レポートに書かれたコメントの数
+    String REP_COL_IS_READ_COMMENT = "is_read_comment";   //日報についたコメントを作成者が閲覧したか
 
     //ユーザー一時保存テーブル
-    String TABLE_TMP = "userTmps";          //テーブル名
+    String TABLE_TMP = "userTmps";         //テーブル名
     //ユーザー一時保存テーブルカラム
-    String TMP_COL_ID = "id";                    //id
-    String TMP_COL_EMP = "employee_id";     //一時保存する従業員のid
+    String TMP_COL_ID = "id";              //id
+    String TMP_COL_EMP = "employee_id";    //一時保存する従業員のid
     String TMP_COL_PUNCH_IN = "punch_in";  //出勤時刻
 
     //コメントテーブル

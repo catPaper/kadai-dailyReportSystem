@@ -4,6 +4,8 @@ package actions.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import constants.AttributeConst;
+import constants.JpaConst;
 import models.Report;
 
 /**
@@ -29,7 +31,12 @@ public class ReportConverter {
                 rv.getUpdatedAt(),
                 rv.getPunchIn(),
                 rv.getPunchOut(),
-                rv.getCommentCount());
+                rv.getCommentCount(),
+                rv.getIsReadComment() == null
+                    ? null
+                    : rv.getIsReadComment() == AttributeConst.READ_FLAG_TRUE.getIntegerValue()
+                        ? JpaConst.REP_READ_CMT_TRUE
+                        : JpaConst.REP_READ_CMT_FALSE);
     }
 
     /**
@@ -52,7 +59,12 @@ public class ReportConverter {
                 r.getUpdatedAt(),
                 r.getPunchIn(),
                 r.getPunchOut(),
-                r.getCommentCount());
+                r.getCommentCount(),
+                r.getIsReadComment() == null
+                    ? null
+                    : r.getIsReadComment() == JpaConst.REP_READ_CMT_TRUE
+                        ? AttributeConst.READ_FLAG_TRUE.getIntegerValue()
+                        : AttributeConst.READ_FLAG_FALSE.getIntegerValue());
     }
 
 
@@ -82,5 +94,6 @@ public class ReportConverter {
         r.setPunchIn(rv.getPunchIn());
         r.setPunchOut(rv.getPunchOut());
         r.setCommentCount(rv.getCommentCount());
+        r.setIsReadComment(rv.getIsReadComment());
     }
 }

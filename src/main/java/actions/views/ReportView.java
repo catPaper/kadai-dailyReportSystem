@@ -70,4 +70,9 @@ public class ReportView {
      */
     private Integer commentCount;
 
+    /**
+     * 新しいコメントを見たか
+     */
+    private Integer isReadComment;
+
 }
