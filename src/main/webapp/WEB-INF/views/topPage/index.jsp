@@ -44,6 +44,17 @@
         </c:choose>
         <br>
         <h3>【自分の日報 一覧】</h3>
+        <c:choose>
+            <c:when test="${show_unread == 1}">
+                <p><a href="<c:url value='?action=${actTop}&command=${commIdx}&show_unread=0' />">自分の日報一覧を表示する</a></p>
+            </c:when>
+            <c:otherwise>
+                <c:if test="${exist_unread == 1}">
+                    <p><span class="font_bold">未読のコメントがついた日報があります</span></p>
+                    <p><a href="<c:url value='?action=${actTop}&command=${commIdx}&show_unread=1' />">未読の付いた日報一覧を表示する</a></p>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
         <table>
             <tbody>
                 <tr>

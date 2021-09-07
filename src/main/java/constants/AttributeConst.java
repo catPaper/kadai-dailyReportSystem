@@ -42,10 +42,17 @@ public enum AttributeConst {
     DEL_FLAG_TRUE(1),
     DEL_FLAG_FALSE(0),
 
-    //閲覧フラグ
+    //閲覧済みフラグ
     READ_FLAG_TRUE(1),
     READ_FLAG_FALSE(0),
 
+    //表示フラグ
+    SHOW_FLAG_TRUE(1),
+    SHOW_FLAG_FALSE(0),
+
+    //存在フラグ
+    EXIST_FLAG_TRUE(1),
+    EXIST_FLAG_FALSE(0),
 
     //日報管理
     REPORT("report"),
@@ -59,6 +66,8 @@ public enum AttributeConst {
     REP_PUNCH_OUT("punch_out"),
     REP_COMMENT_COUNT("comment_count"),
     REP_NODELETE_COMMENT_COUNT("nodelete_comment_count"),
+    REP_SHOW_UNREAD("show_unread"),
+    REP_EXIST_UNREAD("exist_unread"),
 
     //ユーザーテンプ管理
     TPM("uerTmp"),

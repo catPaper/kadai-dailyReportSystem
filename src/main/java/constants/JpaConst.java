@@ -105,6 +105,12 @@ public interface JpaConst {
     //指定した従業員が作成した日報の件数を取得する
     String Q_REP_COUNT_ALL_MINE = ENTITY_REP + ".countAllMine";
     String Q_REP_COUNT_ALL_MINE_DEF = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :" + JPQL_PARM_EMPLOYEE;
+    //指定した従業員が作成した日報（未読のみ)を全件idの降順で取得する
+    String Q_REP_GET_ALL_MINE_UNREAD = ENTITY_REP + ".getAllMineUnRead";
+    String Q_REP_GET_ALL_MINE_UNREAD_DEF = "SELECT r FROM Report AS r WHERE r.employee = :" + JPQL_PARM_EMPLOYEE + " AND r.isReadComment = 0 ORDER BY r.id DESC";
+    //指定した従業員が作成した日報(未読のみ))の件数を取得する
+    String Q_REP_COUNT_ALL_MINE_UNREAD = ENTITY_REP + ".countAllMineUnRead";
+    String Q_REP_COUNT_ALL_MINE_UNREAD_DEF = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :" + JPQL_PARM_EMPLOYEE + " AND r.isReadComment = 0";
     //指定した従業員のユーザー一時情報を取得する
     String Q_TMP_GET_MINE = ENTITY_TMP + ".getMine";
     String Q_TMP_GET_MINE_DEF = "SELECT t FROM UserTmp AS t WHERE t.employee = :" + JPQL_PARM_EMPLOYEE;

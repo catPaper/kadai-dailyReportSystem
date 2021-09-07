@@ -52,13 +52,6 @@ public class TopAction extends ActionBase {
         //セッションからログイン中の従業員情報を取得
         EmployeeView loginEmployee = (EmployeeView)getSessionScope(AttributeConst.LOGIN_EMP);
 
-        //ログイン中の従業員が作成した日報データを、指定されたページ数の一覧画面に表示する分取得
-        int page = getPage();
-        List<ReportView> reports = reportService.getMinePerPage(loginEmployee,page);
-
-        //ログイン中の従業員が作成した日報データの件数を取得
-        long myReportCount = reportService.countAllMine(loginEmployee);
-
         //ログインした従業員の一時データがデータベースに無ければ作成
         if(tmpService.countAllMine(loginEmployee) == 0) {
             tmpService.create(loginEmployee);
@@ -66,12 +59,43 @@ public class TopAction extends ActionBase {
         //一時データの出勤時刻を取得
         Time punchIn = tmpService.getPuncIn(loginEmployee);
 
+        //未読メッセージのみを表示するかどうかのパラメータ値を受け取り
+        //nullまたは未読メッセージがない場合はデフォルトで全件表示するよう設定する
+        Integer exist_unread = (reportService.countAllMineUnRead(loginEmployee) > 0)
+                                ? AttributeConst.EXIST_FLAG_TRUE.getIntegerValue()
+                                : AttributeConst.EXIST_FLAG_FALSE.getIntegerValue();
+        Integer isShow;
+        if(getRequestParam(AttributeConst.REP_SHOW_UNREAD) == null
+                || exist_unread == AttributeConst.EXIST_FLAG_FALSE.getIntegerValue()) {
+            isShow = AttributeConst.SHOW_FLAG_FALSE.getIntegerValue();
+        }else {
+            isShow = toNumber(getRequestParam(AttributeConst.REP_SHOW_UNREAD));
+        }
+
+
+        //ログイン中の従業員が作成した日報データを、指定されたページ数の一覧画面に表示する分取得
+        int page = getPage();
+        List<ReportView> reports;
+        //ログイン中の従業員が作成した日報データの件数を取得
+        long myReportCount;
+        if(isShow == AttributeConst.SHOW_FLAG_TRUE.getIntegerValue()) {
+            //ログイン中の従業員の未読コメントのついた日報のみを表示する
+            reports = reportService.getMineUnReadPerPage(loginEmployee, page);
+            myReportCount = reportService.countAllMineUnRead(loginEmployee);
+        }else {
+            //ログイン中の従業員の日報を表示する
+            reports = reportService.getMinePerPage(loginEmployee,page);
+            myReportCount = reportService.countAllMine(loginEmployee);
+        }
+
         putRequestScope(AttributeConst.REPORTS,reports);                    //取得した日報データ
         putRequestScope(AttributeConst.REP_COUNT,myReportCount);            //ログイン中の従業員が作成した日報の数
         putRequestScope(AttributeConst.PAGE,page);                          //ページ数
-        putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);    //1ページに表示するレコードの数
-        putRequestScope(AttributeConst.TMP_PUNCH_IN,punchIn);              //ログイン中の従業員の出勤時刻情報
+        putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);      //1ページに表示するレコードの数
+        putRequestScope(AttributeConst.TMP_PUNCH_IN,punchIn);               //ログイン中の従業員の出勤時刻情報
         putRequestScope(AttributeConst.TOKEN,getTokenId());                 //CSRF対策用トークン
+        putRequestScope(AttributeConst.REP_SHOW_UNREAD,isShow);   //未読コメントのある日報のみを表示するかどうか
+        putRequestScope(AttributeConst.REP_EXIST_UNREAD,exist_unread);      //未読コメントがついた日報が存在するかどうか
 
 
         //セッションスコープ内の日報データを削除
