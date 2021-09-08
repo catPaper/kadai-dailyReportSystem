@@ -17,6 +17,17 @@
             </div>
         </c:if>
         <h2>日報 一覧</h2>
+        <c:choose>
+            <c:when test="${show_unread == 1}">
+                <p><a href="<c:url value='?action=${actRep}&command=${commIdx}&show_unread=0' />">日報一覧を表示する</a></p>
+            </c:when>
+            <c:otherwise>
+                <c:if test="${exist_unread == 1}">
+                    <p><span class="font_bold">未読のコメントがついた日報があります</span></p>
+                    <p><a href="<c:url value='?action=${actRep}&command=${commIdx}&show_unread=1' />">未読の付いた日報一覧を表示する</a></p>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
         <table id="report_list">
             <tbody>
                 <tr>

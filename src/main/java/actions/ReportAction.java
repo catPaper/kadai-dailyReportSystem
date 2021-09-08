@@ -55,21 +55,48 @@ public class ReportAction extends ActionBase {
      */
     public void index() throws ServletException,IOException{
 
+        //セッションからログイン中の従業員情報を取得
+        EmployeeView loginEmployee = (EmployeeView)getSessionScope(AttributeConst.LOGIN_EMP);
+
+        //未読メッセージのみを表示するかどうかのパラメータ値を受け取り
+        //nullまたは未読メッセージがない場合はデフォルトで全件表示するよう設定する
+        Integer exist_unread = (reportService.countAllMineUnRead(loginEmployee) > 0)
+                                ? AttributeConst.EXIST_FLAG_TRUE.getIntegerValue()
+                                : AttributeConst.EXIST_FLAG_FALSE.getIntegerValue();
+        Integer isShow;
+        if(getRequestParam(AttributeConst.REP_SHOW_UNREAD) == null
+                || exist_unread == AttributeConst.EXIST_FLAG_FALSE.getIntegerValue()) {
+            isShow = AttributeConst.SHOW_FLAG_FALSE.getIntegerValue();
+        }else {
+            isShow = toNumber(getRequestParam(AttributeConst.REP_SHOW_UNREAD));
+        }
+
         //指定されたページ数の一覧画面に表示する日報データを取得
         int page = getPage();
-        List<ReportView> reports = reportService.getAllPerPage(page);
-
+        List<ReportView> reports;
         //全日報データの件数を取得
-        long reportsCount = reportService.countAll();
+        long reportsCount;
+        if(isShow == AttributeConst.SHOW_FLAG_TRUE.getIntegerValue()) {
+            //ログイン中の従業員の未読コメントのついた日報のみを表示する
+            reports = reportService.getMineUnReadPerPage(loginEmployee, page);
+            reportsCount = reportService.countAllMineUnRead(loginEmployee);
+        }else {
+            //全日報を表示する
+            reports = reportService.getAllPerPage(page);
+            reportsCount = reportService.countAll();
+        }
+
+
 
         putRequestScope(AttributeConst.REPORTS,reports);                //取得した日報データ
         putRequestScope(AttributeConst.REP_COUNT,reportsCount);         //全ての日報データの件数
-        putRequestScope(AttributeConst.PAGE,page);                       //ページ数
-        putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE); //1ページに表示するレコードの数
+        putRequestScope(AttributeConst.PAGE,page);                      //ページ数
+        putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);  //1ページに表示するレコードの数
+        putRequestScope(AttributeConst.REP_SHOW_UNREAD,isShow);         //未読コメントのある日報のみを表示するかどうか
+        putRequestScope(AttributeConst.REP_EXIST_UNREAD,exist_unread);  //未読コメントがついた日報が存在するかどうか
 
         //セッションスコープ内の日報データを削除
         removeSessionScope_report();
-
         //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え
         String flush = getSessionScope(AttributeConst.FLUSH);
         if(flush != null) {
