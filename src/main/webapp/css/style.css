@@ -180,3 +180,7 @@ div.commentFrame{
     color:orange;
     font-weight:bold;
 }
+
+textarea{
+    resize: none;
+}
