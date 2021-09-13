@@ -28,13 +28,13 @@ public class CalculationUtil {
 
     private static LocalTime NowFormatTimeInternal(LocalTime lt,int stepMinutes) {
         //余りが０の場合はフォーマット通りなので返却する
-        if(( stepMinutes % lt.getMinute() )== 0) {
+        if(( lt.getMinute() % stepMinutes )== 0) {
             return lt;
         }else {
             if(lt.getMinute() < stepMinutes) {
-                //フォーマット間隔が分を超えた場合は時間を繰り上げ
                 if(stepMinutes >= 60) {
-                    lt.plusHours(1);
+                    //フォーマット間隔が分を超えた場合は時間を繰り上げ
+                    lt = lt.plusHours(1);
                     lt = lt.withMinute(0);
                 }else {
                     lt = lt.withMinute(stepMinutes);
