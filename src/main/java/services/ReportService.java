@@ -151,21 +151,38 @@ public class ReportService extends ServiceBase {
     }
 
     /**
-     * レポートについたコメント数を１増やす
+     * 日報についたコメント数を１増やす
      */
-    public void increaseCommentCount(ReportView rv) {
+    public void addCommentCount(ReportView rv) {
         rv.setCommentCount(rv.getCommentCount() + 1);
         updateInternal(rv);
     }
 
     /**
-     * レポートについたコメント数を1減らす
+     * 日報についたコメント数を1減らす
      */
-    public void decreaseCommentCount(ReportView rv) {
+    public void subtractCommentCount(ReportView rv) {
         rv.setCommentCount(rv.getCommentCount() - 1);
         updateInternal(rv);
     }
 
+    /**
+     * 日報の「いいね」数を１増やす
+     * @param rv
+     */
+    public void addGood(ReportView rv) {
+        rv.setGoodCount(rv.getGoodCount() + 1);
+        updateInternal(rv);
+    }
+
+    /**
+     * 日報についた「いいね」数を１減らす
+     * @param rv
+     */
+    public void subtractGood(ReportView rv) {
+        rv.setGoodCount(rv.getGoodCount() - 1);
+        updateInternal(rv);
+    }
 
     /**
      * コメントが閲覧済みかどうか

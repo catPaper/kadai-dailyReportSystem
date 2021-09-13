@@ -48,7 +48,8 @@ public interface JpaConst {
     String REP_COL_PUNCH_IN = "punch_in";               //出勤時刻
     String REP_COL_PUNCH_OUT = "punch_out";             //退勤時刻
     String REP_COL_COMMENT_COUNT = "comment_count";     //レポートに書かれたコメントの数
-    String REP_COL_IS_READ_COMMENT = "is_read_comment";   //日報についたコメントを作成者が閲覧したか
+    String REP_COL_IS_READ_COMMENT = "is_read_comment"; //日報についたコメントを作成者が閲覧したか
+    String REP_COL_GOOD_COUNT = "good_count";           //日報についた「いいね」の数
 
     //ユーザー一時保存テーブル
     String TABLE_TMP = "userTmps";         //テーブル名

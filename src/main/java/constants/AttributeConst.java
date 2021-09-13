@@ -68,6 +68,7 @@ public enum AttributeConst {
     REP_NODELETE_COMMENT_COUNT("nodelete_comment_count"),
     REP_SHOW_UNREAD("show_unread"),
     REP_EXIST_UNREAD("exist_unread"),
+    REP_GOOD_COUNT("good_count"),
 
     //ユーザーテンプ管理
     TPM("uerTmp"),

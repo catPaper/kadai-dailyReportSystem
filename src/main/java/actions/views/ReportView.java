@@ -75,4 +75,9 @@ public class ReportView {
      */
     private Integer isReadComment;
 
+    /**
+     * 日報についた「いいね」の数
+     */
+    private Integer goodCount;
+
 }

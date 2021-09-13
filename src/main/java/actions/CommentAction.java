@@ -140,7 +140,7 @@ public class CommentAction extends ActionBase {
                 //セッションに登録完了のフラッシュメッセージを設定
                 putSessionScope(AttributeConst.FLUSH,MessageConst.I_REGISTERED.getMessage());
                 //レポートのコメント数を１増やす
-                reportService.increaseCommentCount(rv);
+                reportService.addCommentCount(rv);
                 //コメント主が日報作成者以外の場合は日報にコメント未読をつける
                 if(cv.getEmployee().getId() != rv.getEmployee().getId()) {
                     reportService.setUnReadComment(rv);
@@ -165,7 +165,7 @@ public class CommentAction extends ActionBase {
             //idを条件にコメントデータを論理削除する
             commentService.destroy(toNumber(getRequestParam(AttributeConst.CMT_ID)));
             //日報についたコメント数を１減らす
-            reportService.decreaseCommentCount((ReportView)getSessionScope(AttributeConst.CMT_REPORT));
+            reportService.subtractCommentCount((ReportView)getSessionScope(AttributeConst.CMT_REPORT));
 
             //セッションに削除官僚のフラッシュメッセージを設定
             putSessionScope(AttributeConst.FLUSH,MessageConst.I_DELETED.getMessage());

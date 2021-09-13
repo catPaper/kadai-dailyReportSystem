@@ -124,4 +124,10 @@ public class Report {
      */
     @Column(name = JpaConst.REP_COL_IS_READ_COMMENT,nullable = false,columnDefinition = "integer default 1")
     private Integer isReadComment;
+
+    /**
+     * 日報についた「いいね」の数
+     */
+    @Column(name = JpaConst.REP_COL_GOOD_COUNT,nullable = false,columnDefinition = "integer default 0")
+    private Integer goodCount;
 }

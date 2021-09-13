@@ -36,7 +36,8 @@ public class ReportConverter {
                     ? null
                     : rv.getIsReadComment() == AttributeConst.READ_FLAG_TRUE.getIntegerValue()
                         ? JpaConst.REP_READ_CMT_TRUE
-                        : JpaConst.REP_READ_CMT_FALSE);
+                        : JpaConst.REP_READ_CMT_FALSE,
+                rv.getGoodCount());
     }
 
     /**
@@ -64,7 +65,8 @@ public class ReportConverter {
                     ? null
                     : r.getIsReadComment() == JpaConst.REP_READ_CMT_TRUE
                         ? AttributeConst.READ_FLAG_TRUE.getIntegerValue()
-                        : AttributeConst.READ_FLAG_FALSE.getIntegerValue());
+                        : AttributeConst.READ_FLAG_FALSE.getIntegerValue(),
+                r.getGoodCount());
     }
 
 
@@ -95,5 +97,6 @@ public class ReportConverter {
         r.setPunchOut(rv.getPunchOut());
         r.setCommentCount(rv.getCommentCount());
         r.setIsReadComment(rv.getIsReadComment());
+        r.setGoodCount(rv.getGoodCount());
     }
 }

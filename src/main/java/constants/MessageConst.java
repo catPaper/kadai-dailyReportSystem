@@ -13,13 +13,17 @@ public enum MessageConst {
     I_LOGOUT("ログアウトしました。"),
 
     //DB更新
-    I_REGISTERED("登録が完了しました"),
+    I_REGISTERED("登録が完了しました。"),
     I_UPDATED("更新が完了しました。"),
     I_DELETED("削除が完了しました。"),
 
     //出勤登録
     I_PUNCH_IN("出勤登録を行いました。"),
     I_PUNCH_IN_CANCEL("出勤登録を取り消しました。"),
+
+    //いいね
+    I_ADD_GOOD("日報にいいねしました。"),
+    I_SUB_GOOD("いいねを取り消しました。"),
 
     //バリデーション
     E_NONAME("氏名を入力してください。"),

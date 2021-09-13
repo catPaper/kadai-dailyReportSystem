@@ -183,7 +183,8 @@ public class ReportAction extends ActionBase {
                     punchIn,
                     punchOut,
                     AttributeConst.DEL_FLAG_FALSE.getIntegerValue(),
-                    AttributeConst.READ_FLAG_TRUE.getIntegerValue());
+                    AttributeConst.READ_FLAG_TRUE.getIntegerValue(),
+                    0);
 
             //日報情報の登録
             List<String> errors = reportService.create(rv);
@@ -326,6 +327,38 @@ public class ReportAction extends ActionBase {
                 //一覧画面にリダイレクト
                 redirect(ForwardConst.ACT_REP,ForwardConst.CMD_INDEX);
             }
+        }
+    }
+
+    /**
+     * 日報についた「いいね」数を増やす
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void addGood() throws ServletException,IOException{
+
+        //CSRF対策
+        if(checkToken()) {
+            int id = Integer.parseInt(getRequestParam(AttributeConst.REP_ID));
+            ReportView rv = reportService.findOne(id);
+            reportService.addGood(rv);
+            putSessionScope(AttributeConst.FLUSH,MessageConst.I_ADD_GOOD.getMessage());
+        }
+    }
+
+    /**
+     * 日報についた「いいね」数を減らす
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void subGood() throws ServletException,IOException{
+
+        //CSRF対策
+        if(checkToken()) {
+            int id = Integer.parseInt(getRequestParam(AttributeConst.REP_ID));
+            ReportView rv = reportService.findOne(id);
+            reportService.subtractGood(rv);
+            putSessionScope(AttributeConst.FLUSH,MessageConst.I_SUB_GOOD.getMessage());
         }
     }
 }
