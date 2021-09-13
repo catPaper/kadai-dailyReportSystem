@@ -53,6 +53,7 @@ table, tr, th, td {
 table {
     width: 100%;
     table-layout: fixed;
+    word-break: break-all;
 }
 
 th {
