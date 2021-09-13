@@ -129,7 +129,8 @@ public class EmployeeAction extends ActionBase {
             }else {
                 //登録中にエラーがなかった場合
                 //従業員用のユーザーテンプデータを作成する
-                tmpService.create(ev);
+                EmployeeView createEv = employeeService.findOne(getRequestParam(AttributeConst.EMP_CODE), getRequestParam(AttributeConst.EMP_PASS), pepper);
+                tmpService.create(createEv);
 
                 //セッションに登録完了のフラッシュメッセージを設定
                 putSessionScope(AttributeConst.FLUSH,MessageConst.I_REGISTERED.getMessage());

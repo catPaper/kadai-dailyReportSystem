@@ -36,12 +36,11 @@ public class UserTmpService extends ServiceBase {
      * @return
      */
     public Time getPuncIn(EmployeeView ev) {
-        Time punchIn = null;
         if(countAllMine(ev) != 0) {
             UserTmpView tmp = findViewByEmployee(ev);
             return tmp.getPunchIn();
         }
-        return punchIn;
+        return null;
     }
 
     /**
