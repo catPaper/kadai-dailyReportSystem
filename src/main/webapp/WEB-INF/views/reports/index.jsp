@@ -38,6 +38,7 @@
                     <th class = "report_puncOut">退勤時刻</th>
                     <th class = "repot_action">操作</th>
                     <th class = "report_comment">コメント</th>
+                    <th class = "report_reaction">「いいね」</th>
                 </tr>
                 <c:forEach var="report" items="${reports}" varStatus="status">
                     <fmt:parseDate value="${report.reportDate}" pattern="yyyy-MM-dd" var="reportDay" type="date" />
@@ -56,6 +57,16 @@
                                 未読メッセージ
                             </c:if>
                             </a>
+                        </td>
+                        <td class = "report_reaction">
+                            <c:choose>
+                                <c:when test="${reactions[status.index] == 0}">
+                                    <c:out value=" " />
+                                </c:when>
+                                <c:otherwise>
+                                    <c:out value="${reactions[status.index]}件" />
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                     </tr>
                 </c:forEach>

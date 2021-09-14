@@ -12,6 +12,7 @@ import constants.AttributeConst;
 import constants.ForwardConst;
 import constants.JpaConst;
 import constants.MessageConst;
+import services.ReactionService;
 import services.ReportService;
 import services.UserTmpService;
 import utils.CalculationUtil;
@@ -25,6 +26,7 @@ public class TopAction extends ActionBase {
 
     private ReportService reportService;
     private UserTmpService tmpService;
+    private ReactionService reactionService;
 
     /**
      * invokeメソッドを実行する
@@ -34,12 +36,14 @@ public class TopAction extends ActionBase {
 
         reportService = new ReportService();
         tmpService = new UserTmpService();
+        reactionService = new ReactionService();
 
         //メソッドを実行
         invoke();
 
         reportService.close();
         tmpService.close();
+        reactionService.close();
     }
 
     /**
@@ -88,6 +92,9 @@ public class TopAction extends ActionBase {
             myReportCount = reportService.countAllMine(loginEmployee);
         }
 
+        //リアクション数のリストを作成する
+        List<Long> reactions = reactionService.getAllCountReactToReport(reports);
+
         putRequestScope(AttributeConst.REPORTS,reports);                    //取得した日報データ
         putRequestScope(AttributeConst.REP_COUNT,myReportCount);            //ログイン中の従業員が作成した日報の数
         putRequestScope(AttributeConst.PAGE,page);                          //ページ数
@@ -96,6 +103,7 @@ public class TopAction extends ActionBase {
         putRequestScope(AttributeConst.TOKEN,getTokenId());                 //CSRF対策用トークン
         putRequestScope(AttributeConst.REP_SHOW_UNREAD,isShow);             //未読コメントのある日報のみを表示するかどうか
         putRequestScope(AttributeConst.REP_EXIST_UNREAD,exist_unread);      //未読コメントがついた日報が存在するかどうか
+        putRequestScope(AttributeConst.REACTIONS,reactions);            //リアクション数のリスト
 
 
         //セッションスコープ内の日報データを削除

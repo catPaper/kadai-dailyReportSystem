@@ -55,8 +55,10 @@
                     <th>更新日時</th>
                     <fmt:parseDate value="${report.updatedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="updateDay" type="date" />
                     <td><fmt:formatDate value="${updateDay}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                </tr>
+                <tr>
                     <c:if test="${reactCount > 0}">
-                        <th>いいねの数</th>
+                        <th>「いいね」の数</th>
                         <td>${reactCount}件</td>
                     </c:if>
                 </tr>
