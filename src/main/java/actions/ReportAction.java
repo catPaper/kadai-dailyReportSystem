@@ -17,6 +17,7 @@ import constants.JpaConst;
 import constants.MessageConst;
 import constants.ParameterConst;
 import services.CommentService;
+import services.ReactionService;
 import services.ReportService;
 import services.UserTmpService;
 
@@ -30,6 +31,7 @@ public class ReportAction extends ActionBase {
     private ReportService reportService;
     private UserTmpService tmpService;
     private CommentService commentService;
+    private ReactionService reactionService;
 
     /**
      * メソッドを実行する
@@ -40,12 +42,14 @@ public class ReportAction extends ActionBase {
         reportService = new ReportService();
         tmpService = new UserTmpService();
         commentService = new CommentService();
+        reactionService = new ReactionService();
 
         invoke();
 
         reportService.close();
         tmpService.close();
         commentService.close();
+        reactionService.close();
     }
 
     /**
@@ -86,7 +90,8 @@ public class ReportAction extends ActionBase {
             reportsCount = reportService.countAll();
         }
 
-
+        //リアクション数のリストを作成する
+        List<Long> reactions = reactionService.getAllCountReactToReport(reports);
 
         putRequestScope(AttributeConst.REPORTS,reports);                //取得した日報データ
         putRequestScope(AttributeConst.REP_COUNT,reportsCount);         //全ての日報データの件数
@@ -94,6 +99,7 @@ public class ReportAction extends ActionBase {
         putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);  //1ページに表示するレコードの数
         putRequestScope(AttributeConst.REP_SHOW_UNREAD,isShow);         //未読コメントのある日報のみを表示するかどうか
         putRequestScope(AttributeConst.REP_EXIST_UNREAD,exist_unread);  //未読コメントがついた日報が存在するかどうか
+        putRequestScope(AttributeConst.REACTIONS,reactions);            //リアクション数のリスト
 
         //セッションスコープ内の日報データを削除
         removeSessionScope_report();
@@ -183,8 +189,7 @@ public class ReportAction extends ActionBase {
                     punchIn,
                     punchOut,
                     AttributeConst.DEL_FLAG_FALSE.getIntegerValue(),
-                    AttributeConst.READ_FLAG_TRUE.getIntegerValue(),
-                    0);
+                    AttributeConst.READ_FLAG_TRUE.getIntegerValue());
 
             //日報情報の登録
             List<String> errors = reportService.create(rv);
@@ -222,7 +227,7 @@ public class ReportAction extends ActionBase {
 
         ReportView rv = (ReportView)getSessionScope(AttributeConst.CMT_REPORT);
 
-      //日報一覧から来た場合は、レポートidをもとにセッションスコープにレポートをセットする
+        //日報一覧から来た場合は、レポートidをもとにセッションスコープにレポートをセットする
         if(rv == null) {
             rv = reportService.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
             //見つからない場合エラーページを表示
@@ -249,6 +254,13 @@ public class ReportAction extends ActionBase {
             reportService.setReadComment(rv);
         }
 
+        //日報閲覧時にリアクションテーブルが作られていない場合は作成する
+        if(reactionService.countCreatedMineReactDataToReport(rv, ev) != 1) {
+            reactionService.create(rv, ev);
+        }
+        long reactCount = reactionService.countAllReactToReport(rv);
+        long myReactCount = reactionService.countMineReactToReport(rv, ev);
+
         putRequestScope(AttributeConst.TOKEN,getTokenId());                                 //CSRF対策用トークン
         putRequestScope(AttributeConst.COMMENTS,comments);                                  //取得したコメントデータ
         putRequestScope(AttributeConst.REP_NODELETE_COMMENT_COUNT,noDeleteCommentCount);    //論理削除されていないコメント数
@@ -256,6 +268,8 @@ public class ReportAction extends ActionBase {
         putRequestScope(AttributeConst.PAGE,page);                                          //ページ数
         putRequestScope(AttributeConst.MAX_ROW,JpaConst.ROW_PER_PAGE);                      //1ページに表示するレコードの数
         putRequestScope(AttributeConst.COMMENT,comment);                                    //空のコメントインスタンス
+        putRequestScope(AttributeConst.RCT_REACT_COUNT,reactCount);                         //日報についたリアクション数
+        putRequestScope(AttributeConst.RCT_MY_REACT_COUNT,myReactCount);                    //自分が日報につけたリアクションの数
 
         //詳細画面を表示
         forward(ForwardConst.FW_REP_SHOW);
@@ -331,34 +345,46 @@ public class ReportAction extends ActionBase {
     }
 
     /**
-     * 日報についた「いいね」数を増やす
+     * 日報に「いいね」する
      * @throws ServletException
      * @throws IOException
      */
-    public void addGood() throws ServletException,IOException{
+    public void doReact() throws ServletException,IOException{
 
         //CSRF対策
         if(checkToken()) {
             int id = Integer.parseInt(getRequestParam(AttributeConst.REP_ID));
             ReportView rv = reportService.findOne(id);
-            reportService.addGood(rv);
-            putSessionScope(AttributeConst.FLUSH,MessageConst.I_ADD_GOOD.getMessage());
+            EmployeeView ev = getSessionScope(AttributeConst.LOGIN_EMP);
+            //リアクションを行い、完了した場合フラッシュメッセージを設定
+            if(reactionService.doReact(rv, ev)) {
+                putRequestScope(AttributeConst.FLUSH,MessageConst.I_ADD_GOOD.getMessage());
+            }
+
+            //詳細画面の呼び出し処理
+            show();
         }
     }
 
     /**
-     * 日報についた「いいね」数を減らす
+     * 日報についた「いいね」を取り消す
      * @throws ServletException
      * @throws IOException
      */
-    public void subGood() throws ServletException,IOException{
+    public void cancelReact() throws ServletException,IOException{
 
         //CSRF対策
         if(checkToken()) {
             int id = Integer.parseInt(getRequestParam(AttributeConst.REP_ID));
             ReportView rv = reportService.findOne(id);
-            reportService.subtractGood(rv);
-            putSessionScope(AttributeConst.FLUSH,MessageConst.I_SUB_GOOD.getMessage());
+            EmployeeView ev = getSessionScope(AttributeConst.LOGIN_EMP);
+            //リアクションを取り消し、完了した場合フラッシュメッセージを設定
+            if(reactionService.cancelReact(rv, ev)) {
+                putRequestScope(AttributeConst.FLUSH,MessageConst.I_SUB_GOOD.getMessage());
+            }
+
+            //詳細画面の呼び出し処理
+            show();
         }
     }
 }

@@ -34,6 +34,8 @@ public interface JpaConst {
     int CMT_DEL_FALSE = 0;      //削除フラグOFF
     int REP_READ_CMT_TRUE = 1;   //コメント閲覧フラグON(閲覧済み)
     int REP_READ_CMT_FALSE = 0;  //コメント閲覧フラグOFF(未読)
+    int RCT_REP_TRUE = 1;  //日報の「いいね」フラグON
+    int RCT_REP_FALSE = 0; //日報の「いいね」フラグOFF
 
     //日報テーブル
     String TABLE_REP = "reports";   //テーブル名
@@ -49,7 +51,15 @@ public interface JpaConst {
     String REP_COL_PUNCH_OUT = "punch_out";             //退勤時刻
     String REP_COL_COMMENT_COUNT = "comment_count";     //レポートに書かれたコメントの数
     String REP_COL_IS_READ_COMMENT = "is_read_comment"; //日報についたコメントを作成者が閲覧したか
-    String REP_COL_GOOD_COUNT = "good_count";           //日報についた「いいね」の数
+
+    //リアクションテーブル
+    String TABLE_RCT = "reactions";                      //テーブル名
+    //リアクションテーブルカラム
+    String RCT_COL_ID = "id";                   //id
+    String RCT_COL_REP = "report_id";           //リアクションをつけた日報のid
+    String RCT_COL_EMP = "employee_id";         //リアクションをつけた従業員のid
+    String RCT_COL_REACT_FLAG = "react_flag";   //日報に「いいね」をしているかどうか
+    String RCT_COL_REACTED_AT = "reacted_at";   //リアクションした日時
 
     //ユーザー一時保存テーブル
     String TABLE_TMP = "userTmps";         //テーブル名
@@ -74,6 +84,7 @@ public interface JpaConst {
     String ENTITY_REP = "report";   //日報
     String ENTITY_TMP = "userTmp";  //ユーザー一時保存
     String ENTITY_CMT = "comment";  //コメント
+    String ENTITY_RCT = "reaction"; //リアクション
 
     //JPQLパラメータ
     String JPQL_PARM_CODE = "code";          //社員番号
@@ -127,4 +138,16 @@ public interface JpaConst {
     //指定した日報についたコメントデータの件数を取得する（論理削除されたデータは除く)
     String Q_CMT_COUNT_NODELETE_BY_REPORT = ENTITY_CMT + ".countNodeleteByReport";
     String Q_CMT_COUNT_NODELETE_BY_REPORT_DEF = "SELECT COUNT(c) FROM Comment As c WHERE c.report = :" + JPQL_PARM_REPORT + " AND c.deleteFlag = 0";
+    //指定した日報についたリアクションの件数を取得する
+    String Q_RCT_ALL_REACT_COUNT_TO_REPORT = ENTITY_RCT + ".countAllReactToReport";
+    String Q_RCT_ALL_REACT_COUNT_TO_REPORT_DEF = "SELECT COUNT(r) FROM Reaction As r WHERE r.report = :" + JPQL_PARM_REPORT + " AND r.reactFlag = 1";
+    //指定した日報に紐づく従業員のリアクションデータの件数を取得する
+    String Q_RCT_COUNT_CREATED_MINE_REACT_DATA_TO_REPORT = ENTITY_RCT + ".countCreatedMineReactDataToReport";
+    String Q_RCT_COUNT_CREATED_MINE_REACT_DATA_TO_REPORT_DEF = "SELECT COUNT(r) FROM Reaction As r WHERE r.report = :" + JPQL_PARM_REPORT + " AND r.employee = :" + JPQL_PARM_EMPLOYEE;
+    //指定した日報に従業員がつけたリアクションの件数を取得する
+    String Q_RCT_COUNT_MINE_REACT_TO_REPORT = ENTITY_RCT + ".countMineReactToReport";
+    String Q_RCT_COUNT_MINE_REACT_TO_REPORT_DEF = "SELECT COUNT(r) FROM Reaction As r WHERE r.report = :" + JPQL_PARM_REPORT + " AND r.employee = :" + JPQL_PARM_EMPLOYEE + " AND r.reactFlag = 1";
+    //指定した日報に従業員がつけたリアクション情報を取得する
+    String Q_RCT_GET_MINE_REACT_TO_REPORT = ENTITY_RCT + ".getMineReactToReport";
+    String Q_RCT_GET_MINE_REACT_TO_REPORT_DEF = "SELECT r FROM Reaction As r WHERE r.report = :" + JPQL_PARM_REPORT + " AND r.employee = :" + JPQL_PARM_EMPLOYEE;
 }

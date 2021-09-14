@@ -8,11 +8,22 @@
 
 <c:import url="../layout/app.jsp">
     <c:param name="content">
+        <c:if test="${flush != null}">
+            <div id="flush_success">
+                <c:out value="${flush}" />
+            </div>
+        </c:if>
         <c:import url="_index.jsp" />
-        <br><br>
+        <br>
+        <br>
 
-        <p><a href="<c:url value='?action=${actRep}&command=${commShow}&r_id=${sessionScope.comment_report.id}' />">日報の詳細ページへ</a></p>
-        <p><a href="<c:url value='?action=${actRep}&command=${commIdx}' />">一覧に戻る</a></p>
+        <p>
+            <a
+                href="<c:url value='?action=${actRep}&command=${commShow}&r_id=${sessionScope.comment_report.id}' />">日報の詳細ページへ</a>
+        </p>
+        <p>
+            <a href="<c:url value='?action=${actRep}&command=${commIdx}' />">一覧に戻る</a>
+        </p>
 
     </c:param>
 </c:import>

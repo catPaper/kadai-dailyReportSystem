@@ -2,13 +2,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="constants.ForwardConst" %>
+<%@ page import="constants.AttributeConst" %>
 
 <c:set var="actRep" value="${ForwardConst.ACT_REP.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commEdt" value="${ForwardConst.CMD_EDIT.getValue()}" />
+<c:set var="commDoRct" value="${ForwardConst.CMD_DO_REACT.getValue()}" />
+<c:set var="commCanclRct" value="${ForwardConst.CMD_CANCL_REACT.getValue()}" />
 
 <c:import url="../layout/app.jsp">
     <c:param name="content">
+        <c:if test="${flush != null}">
+            <div id="flush_success">
+                <c:out value="${flush}" />
+            </div>
+        </c:if>
         <h2>日報 詳細ページ</h2>
 
         <table>
@@ -47,6 +55,10 @@
                     <th>更新日時</th>
                     <fmt:parseDate value="${report.updatedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="updateDay" type="date" />
                     <td><fmt:formatDate value="${updateDay}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                    <c:if test="${reactCount > 0}">
+                        <th>いいねの数</th>
+                        <td>${reactCount}件</td>
+                    </c:if>
                 </tr>
             </tbody>
         </table>
@@ -54,6 +66,22 @@
         <c:if test="${sessionScope.login_employee.id == report.employee.id}">
             <p><a href="<c:url value='?action=${actRep}&command=${commEdt}&r_id=${report.id}' />">この日報を編集する</a></p>
         </c:if>
+
+        <br>
+        <c:choose>
+            <c:when test="${myReactCount != 1}">
+                <form method="POST" action="<c:url value='?action=${actRep}&command=${commDoRct}&r_id=${report.id}' />">
+                    <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
+                    <button type="submit">いいね</button>
+                </form>
+            </c:when>
+            <c:otherwise>
+                <form method="POST" action="<c:url value='?action=${actRep}&command=${commCanclRct}&r_id=${report.id}' />">
+                    <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
+                    <button type="submit">いいねを取り消す</button>
+                </form>
+            </c:otherwise>
+        </c:choose>
 
         <br><br>
 

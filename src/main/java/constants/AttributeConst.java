@@ -54,6 +54,10 @@ public enum AttributeConst {
     EXIST_FLAG_TRUE(1),
     EXIST_FLAG_FALSE(0),
 
+    //リアクションフラグ
+    REACT_FLAG_TRUE(1),
+    REACT_FLAG_FALSE(0),
+
     //日報管理
     REPORT("report"),
     REPORTS("reports"),
@@ -68,7 +72,12 @@ public enum AttributeConst {
     REP_NODELETE_COMMENT_COUNT("nodelete_comment_count"),
     REP_SHOW_UNREAD("show_unread"),
     REP_EXIST_UNREAD("exist_unread"),
-    REP_GOOD_COUNT("good_count"),
+
+    //リアクション
+    REACTION("reaction"),
+    REACTIONS("reactions"),
+    RCT_REACT_COUNT("reactCount"),
+    RCT_MY_REACT_COUNT("myReactCount"),
 
     //ユーザーテンプ管理
     TPM("uerTmp"),

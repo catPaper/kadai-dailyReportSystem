@@ -167,24 +167,6 @@ public class ReportService extends ServiceBase {
     }
 
     /**
-     * 日報の「いいね」数を１増やす
-     * @param rv
-     */
-    public void addGood(ReportView rv) {
-        rv.setGoodCount(rv.getGoodCount() + 1);
-        updateInternal(rv);
-    }
-
-    /**
-     * 日報についた「いいね」数を１減らす
-     * @param rv
-     */
-    public void subtractGood(ReportView rv) {
-        rv.setGoodCount(rv.getGoodCount() - 1);
-        updateInternal(rv);
-    }
-
-    /**
      * コメントが閲覧済みかどうか
      * @param rv
      * @return true:閲覧済み false:未読

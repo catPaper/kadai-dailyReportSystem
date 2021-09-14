@@ -11,11 +11,7 @@
 <c:set var="commDel" value="${ForwardConst.CMD_DESTROY.getValue()}" />
 <c:set var="commCrt" value="${ForwardConst.CMD_CREATE.getValue()}" />
 
-<c:if test="${flush != null}">
-    <div id="flush_success">
-        <c:out value="${flush}" />
-    </div>
-</c:if>
+
 
 <c:choose>
     <c:when test="${nodelete_comment_count == null || nodelete_comment_count == 0}">
